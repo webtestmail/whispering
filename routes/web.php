@@ -23,5 +23,5 @@ Route::get('/contact', [SiteController::class, 'contact'])->name('contact');
 Route::get('/privacy-policy', [SiteController::class, 'privacyPolicy'])->name('privacy.policy');
 
 Route::post('/contact/submit', [ContactController::class, 'submit'])->name('contact.submit');
-
+Route::post('/password/reset', [SiteController::class, 'passwordReset'])->name('password.request');
 require __DIR__.'/admin_web.php';

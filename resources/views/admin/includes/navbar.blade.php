@@ -1,5 +1,8 @@
 @php
     $user = Auth::user();
+   
+    $logo = \App\Models\Admin\Company::select('company_logo','company_icon')->first();
+    $company_icon = $logo->company_icon;
 @endphp
 <nav class="nxl-navigation">
     <div class="navbar-wrapper">
