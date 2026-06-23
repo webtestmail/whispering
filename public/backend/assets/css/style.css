@@ -1,0 +1,43 @@
+html.app-skin-dark .avatar-image, html.app-skin-dark .avatar-text, html.app-skin-dark .input-group-text, html.app-skin-dark .language_select.active a:before, html.app-skin-dark .offcanvas, html.app-skin-dark .page-header, html.app-skin-dark body
+{
+    background-color: #000 !important;
+}
+html.app-skin-dark .nxl-navigation
+ {
+    background: #000!important;
+}
+html.app-skin-dark .nxl-navigation .navbar-content .nxl-navbar>.nxl-item.active>.nxl-link, html.app-skin-dark .nxl-navigation .navbar-content .nxl-navbar>.nxl-item:focus>.nxl-link, html.app-skin-dark .nxl-navigation .navbar-content .nxl-navbar>.nxl-item:hover>.nxl-link {
+    background-color: #c000fa !important;
+}
+
+i {
+    font-size: 16px;
+    font-family: feather;
+    font-style: normal;
+    font-weight: 400;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    color: #ab00ef;
+    -moz-osx-font-smoothing: grayscale;
+}
+.m-header {
+    background-color: #000;
+}
+html.app-skin-dark .nxl-navigation .m-header {
+    background: #000;
+    border-right: 1px solid #1b2436;
+    border-bottom: 1px solid #16213d;
+}
+.page-header .breadcrumb .breadcrumb-item:last-child {
+    opacity: .75;
+    font-weight: 400;
+    color: #a700f5;
+}
+.table-responsive {
+    padding: 15px !important;
+}
+html.app-skin-dark , html.app-skin-dark .form-select, html.app-skin-dark .form-control, html.app-skin-dark .form-select:focus, html.app-skin-dark {
+    color:#000 !important;
+}

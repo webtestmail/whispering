@@ -1,0 +1,10 @@
+User-agent: *
+Disallow: /
+Disallow: /login
+Disallow: /sign-up
+Disallow: /email/verify
+Disallow: /password/
+Disallow: /forget-password/
+Disallow: /my-dashboard
+
+Disallow: /users

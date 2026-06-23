@@ -1,0 +1,26 @@
+<?php
+
+namespace App\Http\Middleware;
+
+use Closure;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
+
+class AdminDeleteMiddleware
+{
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     */
+    public function handle(Request $request, Closure $next): Response
+    {
+        if (Auth::guard('admin')->check()) {
+            return $next($request);
+        }
+
+        // Response to login page if 'user_id' is not present
+        return response()->json(['status' => 'error', 'title' => "Can't operate the Delete operation!", 'message' => "Your data is safe :)"]);
+    }
+}

@@ -1,0 +1,1 @@
+[11-Nov-2025 11:56:27 UTC] PHP Fatal error:  Cannot declare class App\Models\User, because the name is already in use in /home2/matebyas/public_html/social-fox/database/migrations/2025_11_11_115513_create_users_table.php on line 10
