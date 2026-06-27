@@ -11,13 +11,25 @@ class BrandsController extends Controller
 {
     public function manageBrands()
     {
-        $brands = Brands::select('id', 'position_order', 'brand_name', 'brand_image', 'status')->get();
+        $brands = Brands::select('id', 'name', 'brand_image', 'is_active','is_featured')->get();
         foreach ($brands as $brand) {
             $brand->encrypted_id = Crypt::encrypt($brand->id);
         }
         $model = Crypt::encrypt('Brands');
         $currentPage = "manage_brands";
-        return view('admin.manage_brands', ['brandsData' => $brands, 'model' => $model, "currentPage" => $currentPage]);
+        $currentPageName = 'Brands';
+        $addNewData='admin.add.brand';
+        $currentPageData = 'brand'; 
+        $deleteUrl ='admin.brand.delete';
+        return view('admin.manage_brands', [
+            'brandsData' => $brands,
+            'model' => $model,
+            "currentPage" => $currentPage,
+            'currentPageName'=>$currentPageName,
+            'addNewData'=>$addNewData,
+            'currentPageData'=>$currentPageData,
+            'deleteUrl'=>$deleteUrl
+        ]);
     }
 
     public function addBrand(Request $request)
@@ -51,7 +63,10 @@ class BrandsController extends Controller
             }
         } else {
             $currentPage = "manage_brands";
-            return view('admin.brand-ops', ["currentPage" => $currentPage]);
+            $addNewData = 'add.brand';
+            return view('admin.brand-ops', ["currentPage" => $currentPage,
+        
+            'addNewData' =>$addNewData ]);
         }
     }
 
@@ -85,7 +100,8 @@ class BrandsController extends Controller
             $brand = Brands::where('id', $id)->firstOrFail();
             $brand->encrypted_id = $request->brand;
             $currentPage = "manage_brands";
-            return view('admin.brand-ops', ["brand" => $brand, "currentPage" => $currentPage]);
+            $addNewData = 'edit.brand';
+            return view('admin.brand-ops', ["brand" => $brand, "currentPage" => $currentPage,'addNewData'=>$addNewData]);
         }
     }
 

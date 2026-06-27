@@ -7,6 +7,8 @@ use App\Http\Controllers\Admin\BrandsController;
 use App\Http\Controllers\Admin\CompanyController;
 use App\Http\Controllers\Admin\DeleteController;
 use App\Http\Controllers\Admin\FormController;
+use App\Http\Controllers\Admin\GalleriesController;
+use App\Http\Controllers\Admin\GalleryCategoriesController;
 use App\Http\Controllers\Admin\PagesController;
 use App\Http\Controllers\Admin\ServicesController;
 use App\Http\Controllers\Admin\StatusController;
@@ -85,11 +87,23 @@ Route::prefix('/admin')->name('admin.')->middleware(['auth:admin', is_admin::cla
     Route::get('/manage_brands', [BrandsController::class, 'manageBrands'])->name('manage_brands');
     Route::match(['get', 'post'], '/add_brand', [BrandsController::class, 'addBrand'])->name('add.brand');
     Route::match(['get', 'post'], '/edit_brand/{brand}', [BrandsController::class, 'editBrand'])->name('edit.brand');
+    Route::get('/brand_data', [BrandsController::class, 'brand_data'])->name('brand.data');
+    Route::get('/brand_delete', [BrandsController::class, 'brand_delete'])->name('brand.delete');
 
     Route::get('/manage_testimonials', [TestimonialsController::class, 'manageTestimonials'])->name('manage_testimonials');
     Route::get('/testimonial_data', [TestimonialsController::class, 'testimonial_data'])->name('testimonial.data');
     Route::match(['get', 'post'], '/add_testimonial', [TestimonialsController::class, 'addTestimonial'])->name('add.testimonial');
     Route::match(['get', 'post'], '/edit_testimonial/{testimonial}', [TestimonialsController::class, 'editTestimonial'])->name('edit.testimonial');
+
+    Route::get('/manage_gallery_categories', [GalleryCategoriesController::class, 'manageGalleryCategories'])->name('manage_gallery_categories');
+    Route::get('/gallery_category_data', [GalleryCategoriesController::class, 'gallery_category_data'])->name('gallery_category.data');
+    Route::match(['get', 'post'], '/add_gallery_category', [GalleryCategoriesController::class, 'addGalleryCategory'])->name('add.gallery_category');
+    Route::match(['get', 'post'], '/edit_gallery_category/{gallery_category}', [GalleryCategoriesController::class, 'editGalleryCategory'])->name('edit.gallery_category');
+
+    Route::get('/manage_galleries', [GalleriesController::class, 'manageGalleries'])->name('manage_galleries');
+    Route::get('/gallery_data', [GalleriesController::class, 'gallery_data'])->name('gallery.data');
+    Route::match(['get', 'post'], '/add_gallery', [GalleriesController::class, 'addGallery'])->name('add.gallery');
+    Route::match(['get', 'post'], '/edit_gallery/{gallery}', [GalleriesController::class, 'editGallery'])->name('edit.gallery');
 
     Route::get('/manage_company', [CompanyController::class, 'manageCompany'])->name('manage_company');
     Route::post('/edit_company/{company}', [CompanyController::class, 'editCompany'])->name('edit.company');

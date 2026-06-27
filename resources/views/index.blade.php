@@ -1,13 +1,27 @@
+@section('title', $page->meta_title ?? '')
+@section('description', $page->meta_description ?? '')
+@section('keywords', $page->meta_keyword ?? '')
 @include('header') 
 
+
+@php
+    $banner_image = $page->banner_image;
+    $hero_section = \App\Models\Admin\PageSections::where('id', 123)->first();
+    $about_section = \App\Models\Admin\PageSections::where('id', 124)->first();
+@endphp
+
+
+
+
+@if($hero_section)
 <section class="hero">
     <div class="hero_image">
-        <img src="{{ asset('imgs/banner.png') }}" alt="Hero Image" class="hero__poster" id="heroPoster">
-        <video src="{{ asset('imgs/header-video.mp4') }}" id="heroVideo" autoplay muted loop playsinline></video>
+        <img src="{{ asset($page->banner_image) }}" alt="Hero Image" class="hero__poster" id="heroPoster">
+        <video src="{{ asset($hero_section->section_image) }}" id="heroVideo" autoplay muted loop playsinline></video>
     </div>
     <div class="hero__inner">
         <div class="container">
-            <h1 class="hero__title">Timeless Escapes In The Lap Of The Himalayas</h1>
+            <h1 class="hero__title">{{ $hero_section->section_headline }}</h1>
             <div class="header_buttons justify-content-center mt-4">
                 <a class="header__button header__button--one" href="{{ route('accommodation') }}">
                     Kanatal 22°c
@@ -23,8 +37,9 @@
                             fill="white" />
                     </svg>
                 </a>
-                <a class="header__button header__button--two">
-                    book now
+                @if($hero_section->button_name)
+                <a href="{{ $hero_section->button_link ?? '#' }}" class="header__button header__button--two">
+                    {{ $hero_section->button_name }}
                     <svg width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
                             d="M13 6.00001L1 6.00001L13 6.00001ZM13 6.00001L8.45455 11L13 6.00001ZM13 6.00001L8.45455 1.00001L13 6.00001Z"
@@ -33,28 +48,40 @@
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                 </a>
+                @endif
             </div>
         </div>
     </div>
 </section>
+@endif
 
+@if($about_section)
 <section class="aboutSecttion section_padding">
     <div class="container">
         <div class="row">
             <div class="col-6" data-animate="fade-up">
                 <div class="aboutSection_images">
+                    @if($about_section->section_image)
                     <div class="aboutSection_image aboutSection_image--one" data-animate="fade-up">
-                        <img src="/imgs/about-img-1.png" alt="About Image 1" class="section_image">
+                        <img src="{{ asset($about_section->section_image) }}" alt="About Image 1" class="section_image">
                     </div>
-                    <div class="aboutSection_image aboutSection_image--two" data-animate="fade-up">
-                        <img src="/imgs/about-img-2.png" alt="About Image 2" class="section_image">
-                    </div>
+                    @endif
+                    @if(!empty($about_section->more_images))
+                        @php
+                            $about_more_images = json_decode($about_section->more_images, true) ?? [];
+                        @endphp
+                        @if(!empty($about_more_images[0]))
+                        <div class="aboutSection_image aboutSection_image--two" data-animate="fade-up">
+                            <img src="{{ asset($about_more_images[0]) }}" alt="About Image 2" class="section_image">
+                        </div>
+                        @endif
+                    @endif
                 </div>
             </div>
-
+            
             <div class="col-6" data-animate="fade-up">
                 <div class="section__subtitle" data-animate="fade-up">
-                    <span>About Us</span>
+                    <span>{{ $about_section->section_title }}</span>
                     <div class="subtitle_line">
                         <div class="line"></div>
                         <div class="line_icon">
@@ -70,22 +97,14 @@
                         <div class="line"></div>
                     </div>
                 </div>
-                <h2 class="section__title" data-animate="fade-up">Where The Himalayas Whisper Peace</h2>
+                <h2 class="section__title" data-animate="fade-up">{!! $about_section->section_headline !!}</h2>
 
                 <div class="about_content" data-animate="fade-up">
-                    <p>
-                        Whispering Pines, set in the heart of the Indian Himalayas and surrounded by dense Pine, Cedar,
-                        Oak
-                        and Rhododendron forests, with a magical dash of Wild Iris and other wild flowers, seems to
-                        straight
-                        out of a poem by Keats or some romantic classic.
-                        Stunning view of snow capped Himalayas, captivating valleys and heart filling peace embraces you
-                        here.
-                    </p>
+                    <p>{!! htmlspecialchars_decode($about_section->description) !!}</p>
                 </div>
-
-                <a class="header__button header__button--one" data-animate="fade-up">
-                    book now
+                @if($about_section->button_name)
+                <a href="{{ $about_section->button_link ?? '#' }}" class="header__button header__button--one" data-animate="fade-up">
+                    {{ $about_section->button_name }}
                     <svg width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
                             d="M13 6.00001L1 6.00001L13 6.00001ZM13 6.00001L8.45455 11L13 6.00001ZM13 6.00001L8.45455 1.00001L13 6.00001Z"
@@ -94,43 +113,38 @@
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                 </a>
-
+                @endif
+                @if($about_section->pagesubsections->count() > 0)
                 <div class="aboutSection_Usp" data-stagger>
+                    @foreach($about_section->pagesubsections as $subsection)    
                     <div class="aboutSection_UspItem">
-                        <img src="/imgs/icon-1.png" alt="USP Icon 1" class="usp_icon">
+                        <img src="{{ asset($subsection->section_image) }}" alt="USP Icon 1" class="usp_icon">
                         <div class="usp_text">
-                            <div class="usp_counter">10+</div>
-                            <span>Years of Experience</span>
+                            <div class="usp_counter">{{ $subsection->section_headline }}</div>
+                            <span>{{ $subsection->section_subheading }}</span>
                         </div>
                     </div>
-                    <div class="aboutSection_UspItem">
-                        <img src="/imgs/icon-2.png" alt="USP Icon 2" class="usp_icon">
-                        <div class="usp_text">
-                            <div class="usp_counter">300+</div>
-                            <span>Customer Support</span>
-                        </div>
-                    </div>
-                    <div class="aboutSection_UspItem">
-                        <img src="/imgs/icon-3.png" alt="USP Icon 3" class="usp_icon">
-                        <div class="usp_text">
-                            <div class="usp_counter">45k+</div>
-                            <span>Easy Booking & Cancellation</span>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
+                @endif
 
             </div>
 
         </div>
     </div>
 </section>
+@endif
+@php
+    $service_section = \App\Models\Admin\PageSections::where('id', 128)->first();
 
+@endphp
+@if($service_section)
 <section class="serviceSection bgOverlaySection section_padding">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-8" data-animate="fade-up">
                 <div class="section__subtitle">
-                    <span>Our Services</span>
+                    <span>{{ $service_section->section_title }}</span>
                     <div class="subtitle_line">
                         <div class="line"></div>
                         <div class="line_icon">
@@ -146,11 +160,12 @@
                         <div class="line"></div>
                     </div>
                 </div>
-                <h3 class="section__title text-white">What You Can Do Here!</h3>
+                <h3 class="section__title text-white">{{ $service_section->section_headline }}</h3>
             </div>
+            @if($service_section->button_name)
             <div class="col-lg-4 text-end" data-animate="fade-up">
-                <a class="header__button header__button--one">
-                    View All
+                <a href="{{ $service_section->button_link ?? '#' }}" class="header__button header__button--one">
+                    {{ $service_section->button_name }}
                     <svg width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
                             d="M13 6.00001L1 6.00001L13 6.00001ZM13 6.00001L8.45455 11L13 6.00001ZM13 6.00001L8.45455 1.00001L13 6.00001Z"
@@ -160,90 +175,147 @@
                     </svg>
                 </a>
             </div>
+            @endif
         </div>
+        @if($service_section->pagesubsections->count() > 0)
         <div class="row mt-5" data-stagger>
+           
+            @php
+               $imageFirst = \App\Models\Admin\PageSections::where('id', 129)->first();
+            @endphp
+            @if($imageFirst)
             <div class="col-lg-6">
                 <div class="service-card">
                     <div class="service-card__media">
-                        <img src="/imgs/ser-1.png" alt="Adventure Sports" class="service-card__img">
+                        <img src="{{ asset($imageFirst->section_image) }}" alt="{{ $imageFirst->section_headline }}" class="service-card__img">
                         <div class="service-card__overlay"></div>
                         <div class="service-card__content">
-                            <h3 class="service-card__title">Adventure Sports</h3>
+                            <h3 class="service-card__title">{{ $imageFirst->section_headline }}</h3>
                             <p class="service-card__desc">
-                                Experience thrilling outdoor activities filled with excitement and adrenaline.
+                                {!! htmlspecialchars_decode($imageFirst->section_subtitle) !!}
                             </p>
-                            <a href="#" class="service-card__link">
-                                Read more
+                            @if($imageFirst->button_name)   
+                            <a href="{{ $imageFirst->button_link ?? '#' }}" class="service-card__link">
+                                {{ $imageFirst->button_name }}
+                                <svg width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M13 6.00001L1 6.00001L13 6.00001ZM13 6.00001L8.45455 11L13 6.00001ZM13 6.00001L8.45455 1.00001L13 6.00001Z"
+                                        fill="white" />
+                                </svg>
                             </a>
+                            @endif
                         </div>
                     </div>
                 </div>
             </div>
+            @endif
+            @php
+               $imageSecond = \App\Models\Admin\PageSections::where('id', 130)->first();
+            @endphp
+            @if($imageSecond)
             <div class="col-lg-6">
                 <div class="row g-3">
                     <div class="col-lg-6">
                         <div class="service-card service-card--small">
                             <div class="service-card__media">
-                                <img src="/imgs/ser-2.png" alt="Adventure Sports" class="service-card__img">
+                                <img src="{{ asset($imageSecond->section_image) }}" alt="Adventure Sports" class="service-card__img">
                                 <div class="service-card__overlay"></div>
                                 <div class="service-card__content">
-                                    <h3 class="service-card__title">Accommodation</h3>
+                                    <h3 class="service-card__title">{{ $imageSecond->section_headline }}</h3>
                                     <p class="service-card__desc">
-                                        Comfortable stays with scenic views.
+                                        {!! htmlspecialchars_decode($imageSecond->section_subtitle) !!}
                                     </p>
-                                    <a href="#" class="service-card__link">
-                                        Read more
+                                    @if($imageSecond->button_name)
+                                    <a href="{{ $imageSecond->button_link ?? '#' }}" class="service-card__link">
+                                        {{ $imageSecond->button_name }}
+                                        <svg width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M13 6.00001L1 6.00001L13 6.00001ZM13 6.00001L8.45455 11L13 6.00001ZM13 6.00001L8.45455 1.00001L13 6.00001Z"
+                                                fill="white" />
+                                        </svg>
                                     </a>
+                                    @endif
                                 </div>
                             </div>
                         </div>
                     </div>
+                    @php
+                       $imageThird = \App\Models\Admin\PageSections::where('id', 131)->first();
+                    @endphp
+                    @if($imageThird)
                     <div class="col-lg-6">
                         <div class="service-card service-card--small">
                             <div class="service-card__media">
-                                <img src="/imgs/ser-3.png" alt="Adventure Sports" class="service-card__img">
+                                <img src="{{ asset($imageThird->section_image) }}" alt="Adventure Sports" class="service-card__img">
                                 <div class="service-card__overlay"></div>
                                 <div class="service-card__content">
-                                    <h3 class="service-card__title">Dining</h3>
+                                    <h3 class="service-card__title">{{ $imageThird->section_headline }}</h3>
                                     <p class="service-card__desc">
-                                        Comfortable stays with scenic views. 
+                                        {!! htmlspecialchars_decode($imageThird->section_subtitle) !!}
                                     </p>
-                                    <a href="#" class="service-card__link">
-                                        Read more
+                                    @if($imageThird->button_name)
+                                    <a href="{{ $imageThird->button_link ?? '#' }}" class="service-card__link">
+                                        {{ $imageThird->button_name }}
+                                        <svg width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M13 6.00001L1 6.00001L13 6.00001ZM13 6.00001L8.45455 11L13 6.00001ZM13 6.00001L8.45455 1.00001L13 6.00001Z"
+                                                fill="white" />
+                                        </svg>
                                     </a>
+                                    @endif
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-12">
-                        <div class="service-card service-card--bottom">
-                            <div class="service-card__media">
-                                <img src="/imgs/ser-4.png" alt="Adventure Sports" class="service-card__img">
-                                <div class="service-card__overlay"></div>
-                                <div class="service-card__content">
-                                    <h3 class="service-card__title">Things to Do</h3>
-                                    <p class="service-card__desc">
-                                       Discover unforgettable adventures and fun activities for every traveler.
-                                    </p>
-                                    <a href="#" class="service-card__link">
-                                        Read more
-                                    </a>
-                                </div>
-                            </div>
+                    @endif
+                </div>
+            </div>
+            @endif
+            @php
+               $imageFourth = \App\Models\Admin\PageSections::where('id', 132)->first();
+            @endphp
+            @if($imageFourth)
+            <div class="col-lg-12">
+                <div class="service-card service-card--bottom">
+                    <div class="service-card__media">
+                        <img src="{{ asset($imageFourth->section_image) }}" alt="{{ $imageFourth->section_headline }}" class="service-card__img">
+                        <div class="service-card__overlay"></div>
+                        <div class="service-card__content">
+                            <h3 class="service-card__title">{{ $imageFourth->section_headline }}</h3>
+                            <p class="service-card__desc">
+                                {!! htmlspecialchars_decode($imageFourth->section_subtitle) !!}
+                            </p>
+                            @if($imageFourth->button_name)
+                            <a href="{{ $imageFourth->button_link ?? '#' }}" class="service-card__link">
+                                {{ $imageFourth->button_name }}
+                                <svg width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M13 6.00001L1 6.00001L13 6.00001ZM13 6.00001L8.45455 11L13 6.00001ZM13 6.00001L8.45455 1.00001L13 6.00001Z"
+                                        fill="white" />
+                                </svg>
+                            </a>
+                            @endif
                         </div>
                     </div>
                 </div>
             </div>
+            @endif
         </div>
+        @endif
     </div>
 </section>
+@endif
 
-
+@php
+    $gallery_section = \App\Models\Admin\PageSections::where('id', 133)->first();
+    $gallery_images = \App\Models\Admin\Galleries::where('is_active',true)->where('is_feature', true)->get();
+@endphp
+@if($gallery_section && $gallery_images->count() > 0)
 <section class="gallerySection section_padding">
     <div class="container">
         <div class="text-center" data-animate="fade-up">
             <div class="section__subtitle">
-                <span>Gallery</span>
+                <span>{{ $gallery_section->section_title }}</span>
                 <div class="subtitle_line justify-content-center">
                     <div class="line"></div>
                     <div class="line_icon">
@@ -259,104 +331,29 @@
                     <div class="line"></div>
                 </div>
             </div>
-            <h3 class="section__title">Discover Whispering Pines</h3>
+            <h3 class="section__title">{{ $gallery_section->section_headline }}</h3>
         </div>
     </div>
     <div class="container-fluid p-0" data-animate="fade-up">
         <div class="accommodation-slider-wrapper mt-5">
             <div class="swiper accommodation-slider">
                 <div class="swiper-wrapper">
-
+                    @foreach($gallery_images as $image)
+                    
                     <div class="swiper-slide">
                         <div class="gallery-item">
                             <div class="gallery-item__media">
-                                <img src="/imgs/g-img-1.png" alt="One Bedroom Cottage" class="gallery-item__img">
+                                <img src="{{ asset($image->image) }}" alt="{{ $image->title }}" class="gallery-item__img">
                                 <div class="gallery-item__overlay"></div>
                             </div>
-                            <div class="gallery-item__content">
-                                <h3 class="gallery-item__title">One Bedroom Cottage</h3>
-                                <p class="gallery-item__desc">Tucked into a quiet pine glade, our hand-crafted
-                                    one-bedroom
-                                    cottage offers panoramic views of the snow-capped peaks right from your pillow.</p>
-                            </div>
+                        </div>
+                        <div class="gallery-item__content">
+                                <h3 class="gallery-item__title">{{ $image->title }}</h3>
+                                <p class="gallery-item__desc">{!! htmlspecialchars_decode($image->short_description) !!}</p>
                         </div>
                     </div>
-
-                    <div class="swiper-slide">
-                        <div class="gallery-item">
-                            <div class="gallery-item__media">
-                                <img src="/imgs/g-img-2.png" alt="Two Bedroom Cottage" class="gallery-item__img">
-                                <div class="gallery-item__overlay"></div>
-                            </div>
-                            <div class="gallery-item__content">
-                                <h3 class="gallery-item__title">Two Bedroom Cottage</h3>
-                                <p class="gallery-item__desc">Tucked into a quiet pine glade, our hand-crafted
-                                    one-bedroom
-                                    cottage offers panoramic views of the snow-capped peaks right from your pillow.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="swiper-slide">
-                        <div class="gallery-item">
-                            <div class="gallery-item__media">
-                                <img src="/imgs/g-img-3.png" alt="Suite" class="gallery-item__img">
-                                <div class="gallery-item__overlay"></div>
-                            </div>
-                            <div class="gallery-item__content">
-                                <h3 class="gallery-item__title">The Pine Suite</h3>
-                                <p class="gallery-item__desc">Tucked into a quiet pine glade, our hand-crafted
-                                    one-bedroom
-                                    cottage offers panoramic views of the snow-capped peaks right from your pillow.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="swiper-slide">
-                        <div class="gallery-item">
-                            <div class="gallery-item__media">
-                                <img src="/imgs/g-img-1.png" alt="One Bedroom Cottage" class="gallery-item__img">
-                                <div class="gallery-item__overlay"></div>
-                            </div>
-                            <div class="gallery-item__content">
-                                <h3 class="gallery-item__title">One Bedroom Cottage</h3>
-                                <p class="gallery-item__desc">Tucked into a quiet pine glade, our hand-crafted
-                                    one-bedroom
-                                    cottage offers panoramic views of the snow-capped peaks right from your pillow.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="swiper-slide">
-                        <div class="gallery-item">
-                            <div class="gallery-item__media">
-                                <img src="/imgs/g-img-2.png" alt="Two Bedroom Cottage" class="gallery-item__img">
-                                <div class="gallery-item__overlay"></div>
-                            </div>
-                            <div class="gallery-item__content">
-                                <h3 class="gallery-item__title">Two Bedroom Cottage</h3>
-                                <p class="gallery-item__desc">Tucked into a quiet pine glade, our hand-crafted
-                                    one-bedroom
-                                    cottage offers panoramic views of the snow-capped peaks right from your pillow.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="swiper-slide">
-                        <div class="gallery-item">
-                            <div class="gallery-item__media">
-                                <img src="/imgs/g-img-3.png" alt="Suite" class="gallery-item__img">
-                                <div class="gallery-item__overlay"></div>
-                            </div>
-                            <div class="gallery-item__content">
-                                <h3 class="gallery-item__title">The Pine Suite</h3>
-                                <p class="gallery-item__desc">Tucked into a quiet pine glade, our hand-crafted
-                                    one-bedroom
-                                    cottage offers panoramic views of the snow-capped peaks right from your pillow.</p>
-                            </div>
-                        </div>
-                    </div>
-
+                    @endforeach
+         
                 </div>
 
                 <div class="swiper-button-prev"></div>
@@ -366,13 +363,19 @@
         </div>
     </div>
 </section>
+@endif
 
+@php
+$testimonials = \App\Models\Admin\PageSections::where('id', 134)->first();
+$testimonial_contents = \App\Models\Admin\Testimonials::where('status','active')->get();
+@endphp
+@if($testimonials)
 <section class="testimonialSection section_padding">
     <div class="container">
 
         <div class="text-center" data-animate="fade-up">
             <div class="section__subtitle">
-                <span>Testimonials</span>
+                <span>{{$testimonials->title}}</span>
                 <div class="subtitle_line justify-content-center">
                     <div class="line"></div>
                     <div class="line_icon">
@@ -388,7 +391,7 @@
                     <div class="line"></div>
                 </div>
             </div>
-            <h3 class="section__title"> Our Guests Speak -Real Stories </h3>
+            <h3 class="section__title">{{$testimonials->section_headline}}</h3>
         </div>
 
         <div class="testimonials__wrapper mt-5" data-animate="fade-up">
@@ -396,8 +399,8 @@
             <!-- LEFT: video thumbnail -->
             <div class="testimonials__video">
                 <div class="testimonials__video-thumb" data-bs-toggle="modal" data-bs-target="#videoModal"
-                    data-video-src="https://www.youtube.com/embed/VIDEO_ID_2?autoplay=1&rel=0">
-                    <img src="/imgs/testimonial-video-img.png" alt="Testimonial Video" class="testimonials__video-img">
+                    data-video-src="{{ asset($testimonials->video_link) }}">
+                    <img src="{{ asset($testimonials->section_image) }}" alt="Testimonial Video" class="testimonials__video-img">
                     <button class="testimonials__play-btn" aria-label="Play video">
                         <svg width="20" height="22" viewBox="0 0 20 22" fill="none">
                             <path d="M2 2L18 11L2 20V2Z" fill="#000" stroke="#000" stroke-width="2"
@@ -411,62 +414,24 @@
             <div class="testimonials__content">
                 <div class="swiper testimonials-swiper">
                     <div class="swiper-wrapper">
-
+                    @foreach($testimonial_contents as $content)
                         <!-- Slide 1 -->
                         <div class="swiper-slide">
                             <p class="testimonials__body">
-                                Long weekends were always tough for us. Having covered almost everything nearby Delhi,
-                                we were out of ideas on what next?...till we discovered this place! It is beautiful,
-                                accessible and with the amazing facilities and activities, you never get bored of this
-                                place.
+                               {!! htmlspecialchars_decode($content->description) !!}
                             </p>
                             <div class="testimonials__author">
                                 <div class="testimonials__author-avatar  ">
-                                    <img src="/imgs/test-icon.png" alt="Sukhman Dhillon">
+                                    <img src="{{ asset($content->client_image ) }}" alt="Sukhman Dhillon">
                                 </div>
                                 <div class="testimonials__author-info">
-                                    <span class="testimonials__author-name">Sukhman Dhillon</span>
-                                    <span class="testimonials__author-location">New Delhi</span>
+                                    <span class="testimonials__author-name">{{ $content->client_name }}</span>
+                                    <span class="testimonials__author-location">{{ $content->company_name }}</span>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Slide 2 -->
-                        <div class="swiper-slide">
-                            <p class="testimonials__body">
-                                The cottage was beyond our expectations. Waking up to snow-capped peaks every morning
-                                was surreal. The staff was incredibly warm and the food was delicious. Will definitely 
-                                return next winter season.
-                            </p>
-                            <div class="testimonials__author">
-                                <div class="testimonials__author-avatar">
-                                    <img src="/imgs/test-icon.png" alt="Rohit Mehra">
-                                </div>
-                                <div class="testimonials__author-info">
-                                    <span class="testimonials__author-name">Rohit Mehra</span>
-                                    <span class="testimonials__author-location">Mumbai</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Slide 3 -->
-                        <div class="swiper-slide">
-                            <p class="testimonials__body">
-                                Perfect getaway from the city chaos. The pine forest walks, bonfire nights and
-                                stargazing were highlights of our trip. Kanatal is truly a hidden gem and this
-                                property made it even more special.
-                            </p>
-                            <div class="testimonials__author">
-                                <div class="testimonials__author-avatar">
-                                    <img src="/imgs/test-icon.png" alt="Priya Sharma">
-                                </div>
-                                <div class="testimonials__author-info">
-                                    <span class="testimonials__author-name">Priya Sharma</span>
-                                    <span class="testimonials__author-location">Bangalore</span>
-                                </div>
-                            </div>
-                        </div>
-
+                    @endforeach
+ 
                     </div>
                     <!-- Nav inside slider -->
                     <div class="testimonials__nav">
@@ -495,7 +460,7 @@
 
     </div>
 </section>
-
+@endif
 <!-- ── VIDEO MODAL ── -->
 <div class="modal fade" id="videoModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -507,21 +472,25 @@
             </button>
             <div class="testimonials__modal-video">
                 <!-- src is empty on purpose — JS fills it on open, clears on close -->
-                <iframe id="testimonialIframe" src="" title="Testimonial Video" frameborder="0"
+                <iframe id="testimonialIframe" src="{{ asset($testimonials->video_link) }}" title="Testimonial Video" frameborder="0"
                     allow="autoplay; encrypted-media" allowfullscreen>
                 </iframe>
             </div>
         </div>
     </div>
 </div>
+@php
+$contactUs = \App\Models\Admin\PageSections::where('id', 135)->first();
 
+@endphp
+@if($contactUs)
 <section class="contactSection section_padding">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-6" data-animate="fade-up">
                 <div class="contactSection_left">
                     <div class="section__subtitle text-white">
-                        <span class="text-white">Contact Us</span>
+                        <span class="text-white">{{ $contactUs->section_title }}</span>
                         <div class="subtitle_line">  
                             <div class="line bg-white"></div>
                             <div class="line_icon">
@@ -538,14 +507,13 @@
                             <div class="line bg-white"></div>
                         </div>
                     </div>
-                    <h3 class="section__title contactSection_title"> Adventure Is Just One Message Away </h3>
+                    <h3 class="section__title contactSection_title">{{ $contactUs->section_headline }}</h3>
                     <p class="contactSection_desc">
-                        Whether you’re looking for adventure, peace, or a refreshing escape into nature, we’re here to
-                        help you plan the perfect mountain getaway filled with unforgettable experiences and
-                        breathtaking views.
+                      {!! htmlspecialchars_decode($contactUs->description) !!}
                     </p>
-                    <a class="header__button header__button--one">
-                        Enquire Now
+                    @if($contactUs->button_name)
+                    <a href="{{$contactUs->button_link }}" class="header__button header__button--one">
+                        {{$contactUs->button_name}}
                         <svg width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M13 6.00001L1 6.00001L13 6.00001ZM13 6.00001L8.45455 11L13 6.00001ZM13 6.00001L8.45455 1.00001L13 6.00001Z"
@@ -554,14 +522,16 @@
                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                     </a>
+                    @endif
                 </div>
             </div>
+  
             <div class="col-lg-6" data-animate="fade-up">
                 <div class="contactSection_right">
                     <div class="contact-video-card" data-bs-toggle="modal" data-bs-target="#contactVideoModal"
-                        data-video-src="https://www.youtube.com/embed/VIDEO_ID_1?autoplay=1&rel=0">
+                        data-video-src="{{$contactUs->video_link}}">
                         <div class="contact-video-card__media">
-                            <img src="/imgs/contact-img.png" alt="Adventure Video" class="contact-video-card__img">
+                            <img src="{{asset($contactUs->section_image) }}" alt="Adventure Video" class="contact-video-card__img">
                             <div class="contact-video-card__overlay"></div>
                             <button class="contact-video-card__play" aria-label="Play Video">
                                 <svg width="20" height="24" viewBox="0 0 20 24" fill="none">
@@ -576,7 +546,7 @@
         </div>
     </div>
 </section>
-
+@endif
 <section class="clientSection section_padding">
     <div class="container">
         <div class="clientSection__wrapper">

@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin\Pages;
+
 class SiteController extends Controller
 {
     public function index()
     {
-        return view('index');
+        $page = Pages::where('id', 1)->first();
+        return view('index', ['page' => $page]);
     }
 
     public function about()

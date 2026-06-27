@@ -75,6 +75,12 @@
                         <li class="nxl-item">
                             <a class="nxl-link" href="{{ route('admin.manage_testimonials') }}">Manage Testimonials</a>
                         </li>
+                        <li class="nxl-item">
+                            <a class="nxl-link" href="{{ route('admin.manage_gallery_categories') }}">Manage Gallery Categories</a>
+                        </li>
+                        <li class="nxl-item">
+                            <a class="nxl-link" href="{{ route('admin.manage_galleries') }}">Manage Gallery</a>
+                        </li>
                     </ul>
                 </li>
 

@@ -44,4 +44,10 @@ class PageSections extends Model
         'section_image' => 'string',
         'status' => 'string',
     ];
+    public function pagesubsections()
+    {
+        return $this->hasMany(PageSections::class, 'parent_id', 'id');
+    }
+
+
 }

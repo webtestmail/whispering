@@ -102,7 +102,7 @@
 
                                 <!-- Company Name -->
                                 <div class="mb-4">
-                                    <label class="form-label">Company Name <span class="text-danger">*</span></label>
+                                    <label class="form-label">Location<span class="text-danger">*</span></label>
                                     <input
                                         type="text"
                                         class="form-control"

@@ -234,7 +234,7 @@
                         <div class="card stretch stretch-full">
                             <div class="card-body">
                                 <div class="mb-4">
-                                    <label for="section_image" class="form-label">Section Image </label>
+                                    <label for="section_image" class="form-label">Section Image / Video</label>
                                     @if (!empty($section->encrypted_id) && !empty($section->section_image))
                                         <div class="my-3">
                                             <div class="img-group lh-0 ms-3 justify-content-start d-none d-sm-flex">
