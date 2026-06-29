@@ -1,4 +1,6 @@
-<?php include 'header.php'; ?>
+@section('title', 'Privacy Policy | Whispering Pines')
+@section('description', '')
+@include('header')
 
 <!-- Make it as a Template for policies pages -->
 
@@ -68,4 +70,4 @@
 
 
 
-<?php include 'footer.php'; ?>
+@include('footer')

@@ -1,4 +1,6 @@
-<?php include 'header.php'; ?>
+@section('title', 'Dining | Whispering Pines')
+@section('description', '')
+@include('header')
 
 <!-- Dining page  -->
 
@@ -277,4 +279,4 @@ FOOD GALLERY
 
 
 
-<?php include 'footer.php'; ?>
+@include('footer')

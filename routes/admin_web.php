@@ -88,7 +88,7 @@ Route::prefix('/admin')->name('admin.')->middleware(['auth:admin', is_admin::cla
     Route::match(['get', 'post'], '/add_brand', [BrandsController::class, 'addBrand'])->name('add.brand');
     Route::match(['get', 'post'], '/edit_brand/{brand}', [BrandsController::class, 'editBrand'])->name('edit.brand');
     Route::get('/brand_data', [BrandsController::class, 'brand_data'])->name('brand.data');
-    Route::get('/brand_delete', [BrandsController::class, 'brand_delete'])->name('brand.delete');
+    Route::match(['post', 'delete'], '/brand_delete', [BrandsController::class, 'brand_delete'])->name('brand.delete');
 
     Route::get('/manage_testimonials', [TestimonialsController::class, 'manageTestimonials'])->name('manage_testimonials');
     Route::get('/testimonial_data', [TestimonialsController::class, 'testimonial_data'])->name('testimonial.data');
@@ -115,4 +115,6 @@ Route::prefix('/admin')->name('admin.')->middleware(['auth:admin', is_admin::cla
     Route::get('/manage_contact_form', [FormController::class, 'manage_contact_form'])->name('manage_contact_form');
     Route::get('/contactform-data', [FormController::class, 'contactform_data'])->name('contactform.data');
     Route::get('/contactform-data/{id}', [FormController::class, 'contactform_detail'])->name('contactform_detail');
+    Route::post('/contactform-delete', [FormController::class, 'contactform_delete'])->name('contactform.delete');
+    Route::post('/contactform-status', [FormController::class, 'contactform_status'])->name('contactform.status');
 });

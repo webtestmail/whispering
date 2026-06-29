@@ -55,6 +55,39 @@
                                         {{ $data['subject'] ?? 'No subject' }}
                                     </td>
                                 </tr>
+                                @if(!empty($data['phone']))
+                                <tr>
+                                    <td style="padding: 15px 0; font-weight: 600; color: #495057; border-bottom: 2px solid #e9ecef; font-size: 16px;">
+                                        📞 Phone
+                                    </td>
+                                    <td style="padding: 15px 0; color: #333333; font-size: 16px;">
+                                        {{ $data['phone'] }}
+                                    </td>
+                                </tr>
+                                @endif
+                                @if(!empty($data['form_type']))
+                                <tr>
+                                    <td style="padding: 15px 0; font-weight: 600; color: #495057; border-bottom: 2px solid #e9ecef; font-size: 16px;">
+                                        🏷️ Type
+                                    </td>
+                                    <td style="padding: 15px 0; color: #333333; font-size: 16px;">
+                                        {{ ucfirst($data['form_type']) }}
+                                    </td>
+                                </tr>
+                                @endif
+                                @if(!empty($data['guests']) || !empty($data['checkin']) || !empty($data['checkout']) || !empty($data['nights']))
+                                <tr>
+                                    <td style="padding: 15px 0; font-weight: 600; color: #495057; border-bottom: 2px solid #e9ecef; font-size: 16px;">
+                                        📅 Stay Details
+                                    </td>
+                                    <td style="padding: 15px 0; color: #333333; font-size: 16px;">
+                                        @if(!empty($data['guests'])) Guests: {{ $data['guests'] }}<br>@endif
+                                        @if(!empty($data['checkin'])) Check-in: {{ $data['checkin'] }}<br>@endif
+                                        @if(!empty($data['checkout'])) Check-out: {{ $data['checkout'] }}<br>@endif
+                                        @if(!empty($data['nights'])) Nights: {{ $data['nights'] }}@endif
+                                    </td>
+                                </tr>
+                                @endif
                             </table>
 
                             <!-- Message -->

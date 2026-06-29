@@ -2,37 +2,17 @@
 
 @section('page-content')
     <div class="nxl-content">
-        <!-- [ page-header ] start -->
         <div class="page-header">
             <div class="page-header-left d-flex align-items-center">
                 <div class="page-header-title">
-                    <h5 class="m-b-10">Contact Querires</h5>
+                    <h5 class="m-b-10">Leads & Enquiries</h5>
                 </div>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('admin.my-dashboard') }}">Home</a></li>
-                    <li class="breadcrumb-item">Manage Contact Querires</li>
+                    <li class="breadcrumb-item">Leads & Enquiries</li>
                 </ul>
             </div>
-            <div class="page-header-right ms-auto">
-                <div class="page-header-right-items">
-                    <div class="d-flex d-md-none">
-                        <!-- <a href="{{ route('admin.manage_faqs') }})" class="page-header-right-close-toggle">
-                            <i class="feather-arrow-left me-2"></i>
-                            <span>Back</span>
-                        </a> -->
-                    </div>
-                    <div class="d-flex align-items-center gap-2 page-header-right-items-wrapper">
-                        <!-- @if (Auth::guard('admin')->user()->role == 1)
-                            <a href="{{ route('admin.add.faq') }}" class="btn btn-primary">
-                                <i class="feather-plus me-2"></i>
-                                <span>New FAQ</span>
-                            </a>
-                        @endif -->
-                    </div>
-                </div>
-            </div>
         </div>
-        <!-- [ Main Content ] start -->
         <div class="main-content">
             <div class="row">
                 <div class="col-lg-12">
@@ -48,31 +28,37 @@
                         </div>
                     @endif
                     <div class="card stretch stretch-full">
+                        <div class="card-header d-flex flex-wrap gap-2 align-items-center">
+                            <select id="filterFormType" class="form-select form-select-sm" style="width:auto;">
+                                <option value="">All Types</option>
+                                <option value="contact">Contact</option>
+                                <option value="booking">Booking</option>
+                                <option value="newsletter">Newsletter</option>
+                            </select>
+                            <select id="filterStatus" class="form-select form-select-sm" style="width:auto;">
+                                <option value="">All Status</option>
+                                <option value="new">New</option>
+                                <option value="read">Read</option>
+                                <option value="replied">Replied</option>
+                            </select>
+                        </div>
                         <div class="card-body p-0">
                             <div class="table-responsive">
                                 <table class="table table-hover" id="contact_form_table">
                                     <thead>
                                         <tr>
-                                            {{-- <th class="wd-30">
-                                                    <div class="btn-group mb-1">
-                                                        <div class="custom-control custom-checkbox ms-1">
-                                                            <input type="checkbox" class="custom-control-input"
-                                                                id="checkAllProposal">
-                                                            <label class="custom-control-label"
-                                                                for="checkAllProposal"></label>
-                                                        </div>
-                                                    </div>
-                                                </th> --}}
                                             <th>S. No.</th>
-                                              <th>Name</th>
+                                            <th>Type</th>
+                                            <th>Name</th>
                                             <th>Email</th>
-                                               <th>Action</th>
-                                             
+                                            <th>Phone</th>
+                                            <th>Subject</th>
+                                            <th>Status</th>
+                                            <th>Received</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                     
-                                    </tbody>
+                                    <tbody></tbody>
                                 </table>
                             </div>
                         </div>
@@ -80,29 +66,42 @@
                 </div>
             </div>
         </div>
-        <!-- [ Main Content ] end -->
     </div>
 
-     <script>
-            $(document).ready(function () {
-            new DataTable('#contact_form_table', {
+    <script>
+        $(document).ready(function () {
+            const table = new DataTable('#contact_form_table', {
                 responsive: true,
                 paging: true,
                 searching: true,
                 ordering: true,
-                "order": [[ 8, "desc" ]],
+                order: [[7, 'desc']],
                 info: true,
                 lengthChange: true,
                 pageLength: 10,
-                ajax: '{{ route("admin.contactform.data") }}',
+                ajax: {
+                    url: '{{ route("admin.contactform.data") }}',
+                    data: function (d) {
+                        d.form_type = $('#filterFormType').val();
+                        d.status = $('#filterStatus').val();
+                    }
+                },
                 columns: [
-                    { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
-                    { data: 'name', name: 'name'},
-                    { data: 'email', name: 'email'},
+                    { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+                    { data: 'form_type_label', name: 'form_type' },
+                    { data: 'name', name: 'name' },
+                    { data: 'email', name: 'email' },
+                    { data: 'phone', name: 'phone', defaultContent: '—' },
+                    { data: 'subject', name: 'subject', defaultContent: '—' },
+                    { data: 'status_badge', name: 'status', orderable: false, searchable: false },
+                    { data: 'submitted_at', name: 'created_at' },
                     { data: 'action', orderable: false, searchable: false }
                 ]
             });
-        });
 
+            $('#filterFormType, #filterStatus').on('change', function () {
+                table.ajax.reload();
+            });
+        });
     </script>
 @endsection

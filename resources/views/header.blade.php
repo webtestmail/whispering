@@ -8,6 +8,8 @@
     <title>@yield('title')</title>
     <meta name="description" content="@yield('description')">
     <meta name="keywords" content="@yield('keywords')">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="lead-submit-url" content="{{ route('contact.submit') }}">
     @php
     $logo = \App\Models\Admin\Company::select('company_logo','company_icon')->first();
     @endphp
@@ -16,8 +18,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Sofia&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5/dist/fancybox/fancybox.css"/>
-    <link rel="stylesheet" href="css/outer.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="{{ asset('css/outer.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 
 <body>
@@ -25,11 +27,11 @@
     <header class="header">
         <div class="container">
             <div class="header__inner">
-                <a href="index.php" class="header__logo"><img src="imgs/header-logo.png" alt=""></a>
+                <a href="{{ route('home') }}" class="header__logo"><img src="{{ asset($logo->company_logo) }}" alt="{{ $logo->company_name }}"></a>
                 <nav class="nav">
                     <a href="{{ route('home') }}" class="nav__link">Home</a>
-                    <a href="the-retreat.php" class="nav__link">The Retreat</a>
-                    <a href="accomodation.php" class="nav__link">Accommodation</a>
+                    <a href="{{ route('the.retreat') }}" class="nav__link">The Retreat</a>
+                    <a href="{{ route('accommodation') }}" class="nav__link">Accommodation</a>
                     <a href="#" class="nav__link">Experiences</a>
                     <a href="#" class="nav__link">Dining</a>
                     <a href="#" class="nav__link">Events & Groups</a>

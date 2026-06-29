@@ -1,4 +1,6 @@
-<?php include 'header.php'; ?>
+@section('title', 'Experiences | Whispering Pines')
+@section('description', '')
+@include('header')
 
 <!-- Hero — already have -->
 <section class="page-hero">
@@ -368,4 +370,4 @@
     </div>
 </section>
 
-<?php include 'footer.php'; ?>
+@include('footer')

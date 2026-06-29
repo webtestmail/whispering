@@ -1,6 +1,6 @@
-@extends('layouts.MainLayouts')
+@include('header')
 @section('title', 'Login')
-@section('content')
+
 
 <section class="login-page ">
     <div class="split-container">
@@ -373,7 +373,7 @@
                                 <svg class="svg-icon">
                                     <use href="{{ asset('images/icons/icons-sprite.svg') }}#icon-arrow-right-box"></use>
                                 </svg>
-                                <a href="{{ route('login') }}" class="text-white">Back to Login</a>
+                                <a href="{{ route('admin.panel') }}" class="text-white">Back to Login</a>
                             </div>
                             <div class="d-flex align-items-center gap-2">
                                 <svg class="svg-icon">
@@ -619,5 +619,5 @@
 </script>
 
 @endpush
-@endsection
+@include('footer')
 

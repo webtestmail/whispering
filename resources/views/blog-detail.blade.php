@@ -1,4 +1,6 @@
-<?php include 'header.php'; ?>
+@section('title', 'Blog | Whispering Pines')
+@section('description', '')
+@include('header')
 
 <!-- Blog Detail page  -->
 
@@ -200,4 +202,4 @@
 
 
 
-<?php include 'footer.php'; ?>
+@include('footer')

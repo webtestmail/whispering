@@ -19,7 +19,8 @@ class SiteController extends Controller
 
     public function theRetreat()
     {
-        return view('the-retreat');
+        $page = Pages::where('id', 36)->first();
+        return view('the-retreat', ['page' => $page]);
     }
 
     public function accommodation()
@@ -80,6 +81,11 @@ class SiteController extends Controller
     public function contact()
     {
         return view('contact');
+    }
+
+    public function enquire()
+    {
+        return view('enquire');
     }
 
     public function privacyPolicy()

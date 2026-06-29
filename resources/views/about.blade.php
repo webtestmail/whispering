@@ -1,5 +1,6 @@
-<?php include 'header.php'; ?>
-
+@section('title', 'About Us | Whispering Pines')
+@section('description', '')
+@include('header')
 
 <!-- Contact Page  page  -->
 
@@ -192,4 +193,4 @@
 
 
 
-<?php include 'footer.php'; ?>
+@include('footer')

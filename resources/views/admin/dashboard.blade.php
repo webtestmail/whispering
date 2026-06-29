@@ -2,6 +2,11 @@
 
 @php
 $users = \App\Models\User::all();
+$totalLeads = \App\Models\Contact::count();
+$newLeads = \App\Models\Contact::where(function ($q) {
+    $q->where('status', 'new')->orWhereNull('status');
+})->count();
+$bookingLeads = \App\Models\Contact::where('form_type', 'booking')->count();
 @endphp
 
 @section('page-content')
@@ -129,7 +134,52 @@ $users = \App\Models\User::all();
                     </div>
                 </div>
                 <!-- [Invoices Awaiting Payment] end -->
-                <!-- [Converted Leads] start -->
+                <!-- [Total Leads] start -->
+                <div class="col-xxl-3 col-md-6">
+                    <div class="card stretch stretch-full">
+                        <div class="card-body">
+                            <div class="d-flex align-items-start justify-content-between mb-4">
+                                <div class="d-flex gap-4 align-items-center">
+                                    <div class="avatar-text avatar-lg bg-gray-200">
+                                        <i class="feather-mail"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fs-4 fw-bold text-dark"><span class="counter">{{ $totalLeads }}</span></div>
+                                        <h3 class="fs-13 fw-semibold text-truncate-1-line">Total Leads</h3>
+                                    </div>
+                                </div>
+                                <a href="{{ route('admin.manage_contact_form') }}" class="">
+                                    <i class="feather-external-link"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- [Total Leads] end -->
+                <!-- [New Leads] start -->
+                <div class="col-xxl-3 col-md-6">
+                    <div class="card stretch stretch-full">
+                        <div class="card-body">
+                            <div class="d-flex align-items-start justify-content-between mb-4">
+                                <div class="d-flex gap-4 align-items-center">
+                                    <div class="avatar-text avatar-lg bg-gray-200">
+                                        <i class="feather-inbox"></i>
+                                    </div>
+                                    <div>
+                                    
+                                        <div class="fs-4 fw-bold text-dark"><span class="counter">{{ $newLeads }}</span></div>
+                                        <h3 class="fs-13 fw-semibold text-truncate-1-line">New Leads</h3>
+                                    </div>
+                                </div>
+                                <a href="{{ route('admin.manage_contact_form') }}" class="">
+                                    <i class="feather-external-link"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- [New Leads] end -->
+                <!-- [Booking Enquiries] start -->
                 <div class="col-xxl-3 col-md-6">
                     <div class="card stretch stretch-full">
                         <div class="card-body">
@@ -139,66 +189,19 @@ $users = \App\Models\User::all();
                                         <i class="feather-calendar"></i>
                                     </div>
                                     <div>
-                                    
-                                        <div class="fs-4 fw-bold text-dark"><span class="counter"> </span></div>
-                                        <h3 class="fs-13 fw-semibold text-truncate-1-line"></h3>
-                                    </div>
-                                </div>
-                                <a href="javascript:void(0);" class="">
-                                    <i class="feather-more-vertical"></i>
-                                </a>
-                            </div>
-                            <div class="pt-4 d-none">
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <a href="javascript:void(0);"
-                                        class="fs-12 fw-medium text-muted text-truncate-1-line">Converted Leads
-                                    </a>
-                                    <div class="w-100 text-end">
-                                        <span class="fs-12 text-dark">52 Completed</span>
-                                        <span class="fs-11 text-muted">(63%)</span>
-                                    </div>
-                                </div>
-                                <div class="progress mt-2 ht-3">
-                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 63%"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- [Converted Leads] end -->
-                <!-- [Projects In Progress] start -->
-                <div class="col-xxl-3 col-md-6">
-                    <div class="card stretch stretch-full">
-                        <div class="card-body">
-                            <div class="d-flex align-items-start justify-content-between mb-4">
-                                <div class="d-flex gap-4 align-items-center">
-                                    <div class="avatar-text avatar-lg bg-gray-200">
-                                        <i class="feather-users"></i>
-                                    </div>
-                                    <div>
-                                        <div class="fs-4 fw-bold text-dark"><span class="counter"></span></div>
-                                        <h3 class="fs-13 fw-semibold text-truncate-1-line">Total Registrations
+                                        <div class="fs-4 fw-bold text-dark"><span class="counter">{{ $bookingLeads }}</span></div>
+                                        <h3 class="fs-13 fw-semibold text-truncate-1-line">Booking Enquiries
                                         </h3>
                                     </div>
                                 </div>
-                                <a href="javascript:void(0);" class="">
-                                    <i class="feather-more-vertical"></i>
+                                <a href="{{ route('admin.manage_contact_form') }}" class="">
+                                    <i class="feather-external-link"></i>
                                 </a>
-                            </div>
-                            <div class="pt-4 ">
-                                <div class="d-flex align-items-center justify-content-between">
-                                
-                                    <div class="w-100 text-end">
-                                       
-                                       
-                                    </div>
-                                </div>
-                               
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- [Projects In Progress] end -->
+                <!-- [Booking Enquiries] end -->
                 <!-- [Conversion Rate] start -->
                 <div class="col-xxl-3 col-md-6">
                     <div class="card stretch stretch-full">

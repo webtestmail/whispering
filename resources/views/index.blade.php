@@ -547,35 +547,27 @@ $contactUs = \App\Models\Admin\PageSections::where('id', 135)->first();
     </div>
 </section>
 @endif
+@php
+$client_section = \App\Models\Admin\PageSections::where('id', 136)->first();
+$clients = \App\Models\Brand::where('is_active',1)->get();
+@endphp
+@if($client_section)
 <section class="clientSection section_padding">
     <div class="container">
         <div class="clientSection__wrapper">
             <div class="row align-items-center">
                 <div class="col-lg-3" data-animate="fade-up">
-                    <h2 class="section__title clientSection_title"> Our Esteemed
-                        Clients </h2>
+                    <h2 class="section__title clientSection_title">{{ $client_section->section_title }}</h2>
                 </div>
                 <div class="col-lg-1"><div class="divider"></div></div>
                 <div class="col-lg-8" data-animate="fade-up">
                     <div class="client-logos ps-lg-5">
                         <div class="swiper client-logos-swiper">
                             <div class="swiper-wrapper">
-                                <div class="swiper-slide client-logo"><img src="/imgs/cl-1.png" alt="Client Logo 1">
+                                @foreach($clients as $client)
+                                <div class="swiper-slide client-logo"><img src="{{ asset($client->brand_image) }}" alt="{{ $client->name }}">
                                 </div>
-                                <div class="swiper-slide client-logo"><img src="/imgs/cl-2.png" alt="Client Logo 2">
-                                </div>
-                                <div class="swiper-slide client-logo"><img src="/imgs/cl-3.png" alt="Client Logo 3">
-                                </div>
-                                <div class="swiper-slide client-logo"><img src="/imgs/cl-4.png" alt="Client Logo 4">
-                                </div>
-                                <div class="swiper-slide client-logo"><img src="/imgs/cl-1.png" alt="Client Logo 1">
-                                </div>
-                                <div class="swiper-slide client-logo"><img src="/imgs/cl-2.png" alt="Client Logo 2">
-                                </div>
-                                <div class="swiper-slide client-logo"><img src="/imgs/cl-3.png" alt="Client Logo 3">
-                                </div>
-                                <div class="swiper-slide client-logo"><img src="/imgs/cl-4.png" alt="Client Logo 4">
-                                </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>
@@ -584,7 +576,7 @@ $contactUs = \App\Models\Admin\PageSections::where('id', 135)->first();
         </div>
     </div>
 </section>
-
+@endif
 <div class="modal fade" id="contactVideoModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content contact-video-modal__content">

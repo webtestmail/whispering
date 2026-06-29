@@ -1,4 +1,6 @@
-<?php include 'header.php'; ?>
+@section('title', 'Blog | Whispering Pines')
+@section('description', '')
+@include('header')
 
 <!-- Blog Lisitng  page  -->
 
@@ -359,15 +361,17 @@
                 Get travel inspiration, seasonal updates and hidden experiences.
             </p>
 
-            <form class="newsletter_form">
+            <form class="newsletter_form" data-lead-form data-form-type="newsletter">
 
-                <input type="email" placeholder="Enter your email">
+                <input type="email" name="email" placeholder="Enter your email" required>
 
                 <button type="submit">
                     Subscribe
                 </button>
 
             </form>
+            <p class="text-center mt-3" data-lead-success style="display:none;color:#fff;">✓ Subscribed successfully!</p>
+            <p class="text-center mt-3 text-danger" data-lead-error style="display:none;"></p>
 
         </div>
 
@@ -379,4 +383,4 @@
 
 
 
-<?php include 'footer.php'; ?>
+@include('footer')

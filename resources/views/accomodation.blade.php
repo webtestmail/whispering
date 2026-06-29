@@ -1,4 +1,6 @@
-<?php include 'header.php'; ?>
+@section('title', 'Accommodation | Whispering Pines')
+@section('description', '')
+@include('header')
 
 <!-- Accomodation listing page  -->
 
@@ -286,4 +288,4 @@
 
 
 
-<?php include 'footer.php'; ?>
+@include('footer')

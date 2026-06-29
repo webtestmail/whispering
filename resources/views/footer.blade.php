@@ -188,9 +188,9 @@
 <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5/dist/fancybox/fancybox.umd.js"></script>
 <script src="js/outer.js"></script>
 <script src="js/script.js"></script>
-<?php if (config('services.recaptcha.site_key')): ?>
+@if (config('services.recaptcha.site_key'))
 <script src="https://www.google.com/recaptcha/api.js?onload=leadRecaptchaInit&render=explicit" async defer></script>
-<?php endif; ?>
+@endif
 <script src="js/leads.js"></script>
 </body>
 

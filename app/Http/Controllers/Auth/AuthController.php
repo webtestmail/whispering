@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rules\Password;
 use App\Models\User;
 use App\Models\UserProfile;
-use App\Services\SmsService;
 use App\Models\Application;
 use Illuminate\Support\Facades\Http;
 
@@ -183,10 +182,6 @@ private function verifyCaptcha($token, $ip)
             'services' => $services
         ];
     }
-    public function __construct(SmsService $smsService)
-        {
-            $this->smsService = $smsService;
-        }
     public function login_auth(Request $request) {
         // Validate the input
         $request->validate([

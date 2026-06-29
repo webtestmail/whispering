@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\auth\AuthController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\SiteController;
 use Illuminate\Support\Facades\Route;
@@ -20,8 +22,18 @@ Route::get('/event-detail', [SiteController::class, 'eventDetail'])->name('event
 Route::get('/blog', [SiteController::class, 'blog'])->name('blog');
 Route::get('/blog-detail', [SiteController::class, 'blogDetail'])->name('blog.detail');
 Route::get('/contact', [SiteController::class, 'contact'])->name('contact');
+Route::get('/enquire', [SiteController::class, 'enquire'])->name('enquire');
 Route::get('/privacy-policy', [SiteController::class, 'privacyPolicy'])->name('privacy.policy');
 
 Route::post('/contact/submit', [ContactController::class, 'submit'])->name('contact.submit');
-Route::post('/password/reset', [SiteController::class, 'passwordReset'])->name('password.request');
+
+Route::get('/login', [AuthController::class, 'login_view'])->name('login');
+Route::post('/login/auth', [AuthController::class, 'login_auth'])->name('login_auth');
+Route::redirect('/membership', '/contact')->name('membership');
+
+Route::get('/password/request', [ForgotPasswordController::class, 'password_request'])->name('password.request');
+Route::post('/password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+Route::get('/password/reset/{id}', [ForgotPasswordController::class, 'resetpasswordpage'])->name('password.restpasswordpage');
+Route::post('/password/change', [ForgotPasswordController::class, 'passwordchange'])->name('password.passwordchange');
+
 require __DIR__.'/admin_web.php';

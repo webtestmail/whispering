@@ -29,19 +29,6 @@
                 @if($user->getIsAdminAttribute())
                 <li class="nxl-item nxl-hasmenu">
                     <a href="javascript:void(0);" class="nxl-link">
-                        <span class="nxl-micon"><i class="fa-solid fa-users"></i></span>
-                        <span class="nxl-mtext">Users</span><span class="nxl-arrow"><i
-                                class="feather-chevron-right"></i></span>
-                    </a>
-                    <ul class="nxl-submenu">
-                        <li class="nxl-item">
-                            <a class="nxl-link" href="{{ route('admin.manage_users') }}">Manage Users</a>
-                        </li>
-                    </ul>
-                </li>
-
-                <li class="nxl-item nxl-hasmenu">
-                    <a href="javascript:void(0);" class="nxl-link">
                         <span class="nxl-micon"><i class="feather-file-text"></i></span>
                         <span class="nxl-mtext">Pages</span><span class="nxl-arrow"><i
                                 class="feather-chevron-right"></i></span>
@@ -49,9 +36,6 @@
                     <ul class="nxl-submenu">
                         <li class="nxl-item">
                             <a class="nxl-link" href="{{ route('admin.manage_pages') }}">Manage Pages</a>
-                        </li>
-                        <li class="nxl-item">
-                            <a class="nxl-link" href="{{ route('admin.manage_banners') }}">Manage Banners</a>
                         </li>
                     </ul>
                 </li>
@@ -63,12 +47,6 @@
                                 class="feather-chevron-right"></i></span>
                     </a>
                     <ul class="nxl-submenu">
-                        <li class="nxl-item">
-                            <a class="nxl-link" href="{{ route('admin.manage_services') }}">Manage Services</a>
-                        </li>
-                        <li class="nxl-item">
-                            <a class="nxl-link" href="{{ route('admin.manage_blogs') }}">Manage Blogs</a>
-                        </li>
                         <li class="nxl-item">
                             <a class="nxl-link" href="{{ route('admin.manage_brands') }}">Manage Brands</a>
                         </li>
@@ -97,9 +75,6 @@
                         <li class="nxl-item">
                             <a class="nxl-link" href="{{ route('admin.manage_contact') }}">Manage Contact</a>
                         </li>
-                        <li class="nxl-item">
-                            <a class="nxl-link" href="{{ route('admin.manage_socials') }}">Manage Socials</a>
-                        </li>
                     </ul>
                 </li>
                 @endif
@@ -107,12 +82,12 @@
                 <li class="nxl-item nxl-hasmenu">
                     <a href="javascript:void(0);" class="nxl-link">
                         <span class="nxl-micon"><i class="feather-mail"></i></span>
-                        <span class="nxl-mtext">Forms</span><span class="nxl-arrow"><i
+                        <span class="nxl-mtext">Leads</span><span class="nxl-arrow"><i
                                 class="feather-chevron-right"></i></span>
                     </a>
                     <ul class="nxl-submenu">
                         <li class="nxl-item">
-                            <a class="nxl-link" href="{{ route('admin.manage_contact_form') }}">Manage Contact Queries</a>
+                            <a class="nxl-link" href="{{ route('admin.manage_contact_form') }}">All Leads & Enquiries</a>
                         </li>
                     </ul>
                 </li>

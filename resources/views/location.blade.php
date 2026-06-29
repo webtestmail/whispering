@@ -1,4 +1,6 @@
-<?php include 'header.php'; ?>
+@section('title', 'Location | Whispering Pines')
+@section('description', '')
+@include('header')
 
 <!-- Location Single page  -->
 
@@ -290,4 +292,4 @@
 
 
 
-<?php include 'footer.php'; ?>
+@include('footer')

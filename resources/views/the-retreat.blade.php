@@ -1,23 +1,28 @@
-<?php include 'header.php'; ?>
+    @section('title', $page->meta_title ?? '')
+    @section('description', $page->meta_description ?? '')
+    @section('keywords', $page->meta_keyword ?? '')
 
+@extends('layouts.MainLayouts')
+@section('content')
+@if($page->page_image)
 <section class="page-hero">
     <div class="page-hero__media">
-        <img src="/imgs/banner.png" alt="The Retreat" class="page-hero__img">
+        <img src="{{ asset($page->page_image) }}" alt="The Retreat" class="page-hero__img">
         <div class="page-hero__overlay"></div>
     </div>
     <div class="page-hero__content">
         <div class="section__subtitle" data-animate="fade-up">
-            <span class="text-white">Our Story</span>
+            <span class="text-white">{{ $page->breadcrumb_headline ?? '' }}</span>
         </div>
         <h1 class="page-hero__title" data-animate="split-title">
-            Crafted For Those Seeking <br> Silence Beyond The Mountains
+            {!! html_entity_decode($page->breadcrumb_description) ?? '' !!}
         </h1>
         <p class="page-hero__sub" data-animate="fade-up" data-delay="0.2">
-            A retreat born from the timeless beauty of the Himalayas.
+            {!! html_entity_decode($page->description) ?? '' !!}
         </p>
     </div>
 </section>
-
+@endif
 
 <section class="brand-story section_padding">
     <div class="container">
@@ -504,7 +509,7 @@
 <!-- your existing #videoModal markup -->
 
 
-<?php include 'footer.php'; ?>
+@endsection
 
 <script>
     const videoModal = document.getElementById('videoModal');

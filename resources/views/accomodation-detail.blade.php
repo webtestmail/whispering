@@ -1,5 +1,6 @@
-<?php include 'header.php'; ?>
-
+@section('title', 'Accommodation | Whispering Pines')
+@section('description', '')
+@include('header')
 
 <section class="page-hero">
     <div class="page-hero__media">
@@ -509,4 +510,4 @@
     </div>
 </section>
 
-<?php include 'footer.php'; ?>
+@include('footer')

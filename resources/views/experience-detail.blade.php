@@ -1,8 +1,6 @@
-<?php include 'header.php'; ?>
-
-
-
-
+@section('title', 'Experiences | Whispering Pines')
+@section('description', '')
+@include('header')
 
 <section class="page-hero">
     <div class="page-hero__media">
@@ -446,7 +444,7 @@
 
             <div class="col-lg-4">
                 <div class="exp-book-wrap">
-                    <div class="exp-book" id="expBookForm">
+                    <div class="exp-book" id="expBookForm" data-lead-form data-form-type="booking">
                         <div class="exp-book__header">
                             <span class="exp-book__tag">Summer Stay</span>
                             <h4 class="exp-book__title">Plan Your Visit</h4>
@@ -457,24 +455,24 @@
                         <div class="exp-book__body">
                             <div class="exp-book__field">
                                 <label class="exp-book__label">Full Name</label>
-                                <input type="text" class="exp-book__input" placeholder="Your name">
+                                <input type="text" name="name" class="exp-book__input" placeholder="Your name" required>
                             </div>
                             <div class="exp-book__field">
                                 <label class="exp-book__label">Phone Number</label>
-                                <input type="tel" class="exp-book__input" placeholder="+91 00000 00000">
+                                <input type="tel" name="phone" class="exp-book__input" placeholder="+91 00000 00000">
                             </div>
                             <div class="exp-book__field">
                                 <label class="exp-book__label">Email Address</label>
-                                <input type="email" class="exp-book__input" placeholder="you@email.com">
+                                <input type="email" name="email" class="exp-book__input" placeholder="you@email.com" required>
                             </div>
                             <div class="exp-book__field">
                                 <label class="exp-book__label">Check-in Date</label>
-                                <input type="date" class="exp-book__input">
+                                <input type="date" name="checkin" class="exp-book__input">
                             </div>
                             <div class="exp-book__row">
                                 <div class="exp-book__field">
                                     <label class="exp-book__label">Adults</label>
-                                    <select class="exp-book__input">
+                                    <select name="guests" class="exp-book__input">
                                         <option>1</option>
                                         <option>2</option>
                                         <option>3</option>
@@ -484,7 +482,7 @@
                                 </div>
                                 <div class="exp-book__field">
                                     <label class="exp-book__label">Nights</label>
-                                    <select class="exp-book__input">
+                                    <select name="nights" class="exp-book__input">
                                         <option>1</option>
                                         <option>2</option>
                                         <option>3</option>
@@ -495,16 +493,20 @@
                             </div>
                             <div class="exp-book__field">
                                 <label class="exp-book__label">Message (optional)</label>
-                                <textarea class="exp-book__input exp-book__textarea"
+                                <textarea name="message" class="exp-book__input exp-book__textarea"
                                     placeholder="Any specific requests or questions..."></textarea>
                             </div>
-                            <button class="exp-book__submit">
+                            <button type="button" class="exp-book__submit" data-lead-submit>
                                 Send Enquiry
                                 <svg width="14" height="12" viewBox="0 0 14 12" fill="none">
                                     <path d="M13 6L1 6M8.45 1L13 6L8.45 11" stroke="white" stroke-width="2"
                                         stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
                             </button>
+                            <p class="exp-book__note" data-lead-success style="display:none;color:#2d6a4f;">
+                                ✓ Enquiry sent. We'll be in touch soon.
+                            </p>
+                            <p class="exp-book__note text-danger" data-lead-error style="display:none;"></p>
                             <p class="exp-book__note">
                                 We respond within 24 hours. No spam, ever.
                             </p>
@@ -540,4 +542,4 @@
 
 
 
-<?php include 'footer.php'; ?>
+@include('footer')

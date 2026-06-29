@@ -1,4 +1,6 @@
-<?php include 'header.php'; ?>
+@section('title', 'Events | Whispering Pines')
+@section('description', '')
+@include('header')
 
 <!-- Events & Groups Listing  page  -->
 
@@ -257,4 +259,4 @@
 
 
 
-<?php include 'footer.php'; ?>
+@include('footer')
