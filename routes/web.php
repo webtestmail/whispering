@@ -11,20 +11,22 @@ Route::get('/', [SiteController::class, 'index'])->name('home');
 Route::get('/about', [SiteController::class, 'about'])->name('about');
 Route::get('/the-retreat', [SiteController::class, 'theRetreat'])->name('the.retreat');
 Route::get('/accommodation', [SiteController::class, 'accommodation'])->name('accommodation');
-Route::get('/accommodation-detail', [SiteController::class, 'accommodationDetail'])->name('accommodation.detail');
+// Route::get('/accommodation-detail', [SiteController::class, 'accommodationDetailLegacy'])->name('accommodation.detail.legacy');
+Route::get('/accommodation/{slug}', [SiteController::class, 'accommodationDetail'])->name('accommodation.detail');
 Route::get('/location', [SiteController::class, 'location'])->name('location');
 Route::get('/gallery', [SiteController::class, 'gallery'])->name('gallery');
 Route::get('/experiences', [SiteController::class, 'experiences'])->name('experiences');
-Route::get('/experience-detail', [SiteController::class, 'experienceDetail'])->name('experience.detail');
+Route::get('/experiences/{slug}', [SiteController::class, 'experienceDetail'])->name('experience.detail');
 Route::get('/dining', [SiteController::class, 'dining'])->name('dining');
 Route::get('/events', [SiteController::class, 'events'])->name('events');
-Route::get('/event-detail', [SiteController::class, 'eventDetail'])->name('event.detail');
+Route::get('/events/{slug}', [SiteController::class, 'eventDetail'])->name('event.detail');
+Route::redirect('/event-detail', '/events');
 Route::get('/blog', [SiteController::class, 'blog'])->name('blog');
 Route::get('/blog-detail', [SiteController::class, 'blogDetail'])->name('blog.detail');
 Route::get('/contact', [SiteController::class, 'contact'])->name('contact');
 Route::get('/enquire', [SiteController::class, 'enquire'])->name('enquire');
-Route::get('/privacy-policy', [SiteController::class, 'privacyPolicy'])->name('privacy.policy');
-
+Route::get('/sitemap', [SiteController::class, 'sitemap'])->name('sitemap');
+Route::get('/{slug}', [SiteController::class, 'legalPage'])->name('legal.page');
 Route::post('/contact/submit', [ContactController::class, 'submit'])->name('contact.submit');
 
 Route::get('/login', [AuthController::class, 'login_view'])->name('login');

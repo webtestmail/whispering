@@ -25,25 +25,25 @@
             <h4 class="footer__heading">Quick links</h4>
             <ul class="footer__links">
               <li class="footer__link-item">
-                <a href="#" class="footer__link">About Us</a>
+                <a href="{{ route('about') }}" class="footer__link">About Us</a>
               </li>
               <li class="footer__link-item">
-                <a href="#" class="footer__link">Offsites & Events</a>
+                <a href="{{ route('events') }}" class="footer__link">Offsites & Events</a>
               </li>
               <li class="footer__link-item">
-                <a href="#" class="footer__link">Download Brochure</a>
+                <a href="{{ asset('downloads/whispering-pines-brochure.pdf') }}" class="footer__link">Download Brochure</a>
               </li>
               <li class="footer__link-item">
-                <a href="#" class="footer__link">News & Media</a>
+                <a href="{{ route('blog') }}" class="footer__link">News & Media</a>
               </li>
               <li class="footer__link-item">
-                <a href="#" class="footer__link">Guests Speak</a>
+                <a href="{{ route('home') }}#guests-speak" class="footer__link">Guests Speak</a>
               </li>
               <li class="footer__link-item">
-                <a href="#" class="footer__link">Contact Us</a>
+                <a href="{{ route('contact') }}" class="footer__link">Contact Us</a>
               </li>
               <li class="footer__link-item">
-                <a href="#" class="footer__link">Sitemap</a>
+                <a href="{{ route('sitemap') }}" class="footer__link">Sitemap</a>
               </li>
             </ul>
           </div>
@@ -134,15 +134,17 @@
       </div>
     </div>
   </div>
-
+@php
+  $legalLinks = \App\Models\Admin\LegalPage::where('status', 'active')->get();
+@endphp
   <!-- MIDDLE: legal links -->
   <div class="footer__middle">
     <div class="container">
       <ul class="footer__legal">
-        <li><a href="privacy-policy.php">Legal</a></li>
-        <li><a href="privacy-policy.php">Privacy Policy</a></li>
-        <li><a href="privacy-policy.php">Terms & Conditions</a></li>
-        <li><a href="privacy-policy.php">Reservation, Cancellation & Refund Policy</a></li>
+        @foreach ($legalLinks as $page)
+          <li><a href="{{ route('legal.page', $page->page_slug) }}">{{ $page->page_name }}</a></li>
+        @endforeach
+
       </ul>
     </div>
   </div>

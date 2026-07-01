@@ -5,7 +5,6 @@ namespace App\Http\Controllers\auth;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Company;
 use App\Models\Admin\Pages;
-use App\Models\Admin\Services;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -150,15 +149,15 @@ private function verifyCaptcha($token, $ip)
             ->where('status', 'active')
             ->get();
     
-        $services = Services::select('service_name', 'service_url')
-            ->whereIn('visibility', ['both', 'header'])
-            ->where('status', 'active')
-            ->get();
+        // $services = Services::select('service_name', 'service_url')
+        //     ->whereIn('visibility', ['both', 'header'])
+        //     ->where('status', 'active')
+        //     ->get();
     
         return [
             'company' => $company,
             'pages' => $pages,
-            'services' => $services
+            // 'services' => $services
         ];
     }
 
@@ -171,15 +170,15 @@ private function verifyCaptcha($token, $ip)
             ->where('status', 'active')
             ->get();
     
-        $services = Services::select('service_name', 'service_url')
-            ->whereIn('visibility', ['both', 'footer'])
-            ->where('status', 'active')
-            ->get();
+        // $services = Services::select('service_name', 'service_url')
+        //     ->whereIn('visibility', ['both', 'footer'])
+        //     ->where('status', 'active')
+        //     ->get();
     
         return [
             'company' => $company,
             'pages' => $pages,
-            'services' => $services
+            // 'services' => $services
         ];
     }
     public function login_auth(Request $request) {

@@ -1,373 +1,391 @@
-@section('title', 'Experiences | Whispering Pines')
-@section('description', '')
+@section('title', $page->meta_title ?? 'Experiences | Whispering Pines')
+@section('description', $page->meta_description ?? '')
+
+@section('keywords', $page->meta_keyword ?? '')
+
 @include('header')
 
-<!-- Hero — already have -->
+
+
+@php
+
+$why_come_here = $sections['why_come_here'] ?? null;
+
+$listingIntro = $sections['listing_intro'] ?? null;
+
+$expGallery = $sections['exp_gallery'] ?? null;
+
+$expCta = $sections['exp_cta'] ?? null;
+
+$field = fn($section, string $key, $default) => ($section && filled($section->{$key})) ? $section->{$key} : $default;
+
+$html = fn($section, string $key, $default) => ($section && filled($section->{$key})) ? htmlspecialchars_decode($section->{$key}) : $default;
+
+$heroImage = ($page && $page->page_image) ? asset($page->page_image) : asset('/imgs/banner.png');
+
+
+
+$defaultGalleryItems = [
+
+    ['src' => '/imgs/g-1.webp', 'caption' => 'Morning light through the pine forest', 'layout' => 'tall'],
+
+    ['src' => '/imgs/g-2.webp', 'caption' => 'Trek to Kodia jungle', 'layout' => 'default'],
+
+    ['src' => '/imgs/g-3.webp', 'caption' => 'Snowfall at Whispering Pines', 'layout' => 'default'],
+
+    ['src' => '/imgs/g-5.webp', 'caption' => 'Bonfire evenings', 'layout' => 'wide'],
+
+    ['src' => '/imgs/g-1.webp', 'caption' => 'Star gazing on the deck', 'layout' => 'tall-sm'],
+
+    ['src' => '/imgs/g-2.webp', 'caption' => 'Adventure activities', 'layout' => 'default'],
+
+    ['src' => '/imgs/g-3.webp', 'caption' => 'The forest in morning mist', 'layout' => 'default'],
+
+];
+
+$galleryItems = ($expGallery && $expGallery->pagesubsections->isNotEmpty())
+
+    ? $expGallery->pagesubsections->map(fn($item) => [
+
+        'src' => $item->section_image ? asset($item->section_image) : asset('/imgs/g-1.webp'),
+
+        'caption' => $item->section_headline ?: '',
+
+        'layout' => $item->section_subheading ?: 'default',
+
+    ])
+
+    : collect($defaultGalleryItems)->map(fn($item) => [
+
+        'src' => asset($item['src']),
+
+        'caption' => $item['caption'],
+
+        'layout' => $item['layout'],
+
+    ]);
+
+@endphp
+
+
+
 <section class="page-hero">
+
     <div class="page-hero__media">
-        <img src="/imgs/banner.png" alt="Experiences" class="page-hero__img">
+
+        <img src="{{ $heroImage }}" alt="Experiences" class="page-hero__img">
+
         <div class="page-hero__overlay"></div>
+
     </div>
+
     <div class="page-hero__content">
+
         <div class="section__subtitle" data-animate="fade-up">
-            <span class="text-white">Experiences</span>
+
+            <span class="text-white">{{ $page?->page_name ?? 'Experiences' }}</span>
+
         </div>
+
         <h1 class="page-hero__title" data-animate="split-title">
-            Every Season Brings <br> A Different Magic
+
+            {{ $page?->breadcrumb_headline_headline ?? 'Every Season Tells A Different Story' }}
+
         </h1>
+
         <p class="page-hero__sub" data-animate="fade-up" data-delay="0.2">
-            From summer trails to winter snowfall — there is always a reason to return.
+
+            {!! $page ? htmlspecialchars_decode($page->breadcrumb_description ?? '') : '' !!}
+
         </p>
+
     </div>
+
 </section>
 
+
+
+@if($why_come_here)
 
 <section class="exp-intro section_padding">
+
     <div class="container">
+
         <div class="row justify-content-center">
+
             <div class="col-lg-8 text-center">
+
                 <div class="section__subtitle " data-animate="fade-up">
-                    <span>Why Come Here</span>
+
+                    <span>{{ $why_come_here->section_title }}</span>
+
                     <div class="subtitle_line justify-content-center">
+
                         <div class="line"></div>
+
                         <div class="line_icon"><img src="/imgs/Vector.svg" alt=""></div>
+
                         <div class="line"></div>
+
                     </div>
+
                 </div>
+
                 <h2 class="section__title" data-animate="split-title">
-                    Life At 7,500 Feet Is Never Ordinary
+
+                    {{ $why_come_here->section_headline }}
+
                 </h2>
-                <p class="exp-intro__para" data-animate="fade-up" data-delay="0.1">
-                    Whispering Pines sits at the crossroads of adventure and stillness. Surrounded
-                    by dense pine and oak forests, with the Gangotri range as your backdrop, every
-                    day here unfolds differently — depending on the season, the weather, and how
-                    deeply you choose to immerse yourself.
-                </p>
-                <p class="exp-intro__para" data-animate="fade-up" data-delay="0.15">
-                    Summer brings lush green trails, cool mountain air and the sound of birds at
-                    dawn. Winter wraps the forest in snow and silence, turning evenings into
-                    bonfire rituals. And all year round, the stars above Kanatal remain among
-                    the clearest in the country — a sky most city dwellers have never truly seen.
-                </p>
-                <p class="exp-intro__para" data-animate="fade-up" data-delay="0.2">
-                    Whatever you come seeking — adventure, rest, or simply a change of pace —
-                    the mountains will meet you exactly where you are.
-                </p>
+
+                {!! htmlspecialchars_decode($why_come_here->description) !!}
+
             </div>
+
         </div>
+
     </div>
+
 </section>
 
+@endif
 
-<!-- ════════════════════════════════
-     3. EXPERIENCES LISTING
-════════════════════════════════ -->
+
+
 <section class="exp-listing section_padding pt-0">
+
     <div class="container">
 
         <div class="text-center mb-5">
+
             <div class="section__subtitle justify-content-center" data-animate="fade-up">
-                <span>What Awaits You</span>
+
+                <span>{{ $field($listingIntro, 'section_title', 'What Awaits You') }}</span>
+
                 <div class="subtitle_line justify-content-center">
-                        <div class="line"></div>
-                        <div class="line_icon"><img src="/imgs/Vector.svg" alt=""></div>
-                        <div class="line"></div>
-                    </div>
+
+                    <div class="line"></div>
+
+                    <div class="line_icon"><img src="/imgs/Vector.svg" alt=""></div>
+
+                    <div class="line"></div>
+
+                </div>
+
             </div>
-            <h2 class="section__title my-3" data-animate="split-title">Explore All Experiences</h2>
+
+            <h2 class="section__title my-3" data-animate="split-title">{{ $field($listingIntro, 'section_headline', 'Explore All Experiences') }}</h2>
+
         </div>
+
+
 
         <div class="row g-4" data-stagger>
 
-            <!-- Summer -->
+            @forelse($experiences as $item)
+
             <div class="col-lg-6">
-                <a href="/experiences/detail" class="exp-card">
+
+                <a href="{{ route('experience.detail', $item->slug) }}" class="exp-card">
+
                     <div class="exp-card__media">
-                        <img src="/imgs/a-1.webp" alt="Summer at Whispering Pines" class="exp-card__img">
+
+                        <img src="{{ $item->listing_image ? asset($item->listing_image) : asset('/imgs/a-1.webp') }}" alt="{{ $item->title }}" class="exp-card__img">
+
                         <div class="exp-card__overlay"></div>
-                        <span class="exp-card__season-tag exp-card__season-tag--summer">Summer</span>
+
+                        @if($item->season_tag)
+
+                        <span class="exp-card__season-tag exp-card__season-tag--{{ $item->season_style ?: 'all' }}">{{ $item->season_tag }}</span>
+
+                        @endif
+
                     </div>
+
                     <div class="exp-card__content">
+
                         <div class="exp-card__meta">
-                            <span class="exp-card__month">Apr — Jun</span>
-                            <span class="exp-card__dot"></span>
-                            <span class="exp-card__temp">12°c — 22°c</span>
+
+                            @if($item->months)<span class="exp-card__month">{{ $item->months }}</span>@endif
+
+                            @if($item->months && $item->temperature)<span class="exp-card__dot"></span>@endif
+
+                            @if($item->temperature)<span class="exp-card__temp">{{ $item->temperature }}</span>@endif
+
                         </div>
-                        <h3 class="exp-card__title">Summer at Whispering Pines</h3>
-                        <p class="exp-card__desc">
-                            Lush green trails, crisp mountain air, blooming rhododendrons
-                            and long warm evenings under a canopy of stars. Summer here
-                            is an escape from the plains in its truest form.
-                        </p>
+
+                        <h3 class="exp-card__title">{{ $item->title }}</h3>
+
+                        <p class="exp-card__desc">{!! htmlspecialchars_decode($item->listing_description) !!}</p>
+
+                        @if(!empty($item->highlights))
+
                         <div class="exp-card__highlights">
-                            <span>Forest Treks</span>
-                            <span>Nature Walks</span>
-                            <span>Campfire Nights</span>
-                            <span>Bird Watching</span>
+
+                            @foreach($item->highlights as $highlight)
+
+                            <span>{{ $highlight }}</span>
+
+                            @endforeach
+
                         </div>
+
+                        @endif
+
                         <div class="exp-card__link">
-                            Explore Summer
+
+                            {{ $item->link_text ?: 'Explore' }}
+
                             <svg width="14" height="12" viewBox="0 0 14 12" fill="none">
+
                                 <path d="M13 6L1 6M8.45 1L13 6L8.45 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
                             </svg>
+
                         </div>
+
                     </div>
+
                 </a>
+
             </div>
 
-            <!-- Winter -->
-            <div class="col-lg-6">
-                <a href="/experiences/detail" class="exp-card">
-                    <div class="exp-card__media">
-                        <img src="/imgs/a-2.webp" alt="Winter at Whispering Pines" class="exp-card__img">
-                        <div class="exp-card__overlay"></div>
-                        <span class="exp-card__season-tag exp-card__season-tag--winter">Winter</span>
-                    </div>
-                    <div class="exp-card__content">
-                        <div class="exp-card__meta">
-                            <span class="exp-card__month">Nov — Feb</span>
-                            <span class="exp-card__dot"></span>
-                            <span class="exp-card__temp">−2°c — 10°c</span>
-                        </div>
-                        <h3 class="exp-card__title">Winter at Whispering Pines</h3>
-                        <p class="exp-card__desc">
-                            Snow-covered pine forests, steaming cups of kahwa by the fire,
-                            and the kind of silence only a Himalayan winter can offer.
-                            Wake up to white mornings and end evenings in warmth.
-                        </p>
-                        <div class="exp-card__highlights">
-                            <span>Snowfall Walks</span>
-                            <span>Bonfire Evenings</span>
-                            <span>Snow Trekking</span>
-                            <span>Hot Springs</span>
-                        </div>
-                        <div class="exp-card__link">
-                            Explore Winter
-                            <svg width="14" height="12" viewBox="0 0 14 12" fill="none">
-                                <path d="M13 6L1 6M8.45 1L13 6L8.45 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
-                    </div>
-                </a>
-            </div>
+            @empty
 
-            <!-- Round the Year -->
-            <div class="col-lg-6">
-                <a href="/experiences/detail" class="exp-card">
-                    <div class="exp-card__media">
-                        <img src="/imgs/a-3.webp" alt="Round the Year" class="exp-card__img">
-                        <div class="exp-card__overlay"></div>
-                        <span class="exp-card__season-tag exp-card__season-tag--all">All Year</span>
-                    </div>
-                    <div class="exp-card__content">
-                        <div class="exp-card__meta">
-                            <span class="exp-card__month">Jan — Dec</span>
-                            <span class="exp-card__dot"></span>
-                            <span class="exp-card__temp">Year Round</span>
-                        </div>
-                        <h3 class="exp-card__title">Round the Year at Whispering Pines</h3>
-                        <p class="exp-card__desc">
-                            Adventure doesn't follow a calendar. Rappelling, river crossing,
-                            rock climbing and team challenges are available every season —
-                            for groups, families and solo adventurers alike.
-                        </p>
-                        <div class="exp-card__highlights">
-                            <span>Rappelling</span>
-                            <span>Rock Climbing</span>
-                            <span>River Crossing</span>
-                            <span>Team Activities</span>
-                        </div>
-                        <div class="exp-card__link">
-                            Explore Adventures
-                            <svg width="14" height="12" viewBox="0 0 14 12" fill="none">
-                                <path d="M13 6L1 6M8.45 1L13 6L8.45 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
-                    </div>
-                </a>
-            </div>
+            <div class="col-12 text-center"><p>No experiences available at the moment.</p></div>
 
-            <!-- Star Gazing -->
-            <div class="col-lg-6">
-                <a href="/experiences/detail" class="exp-card">
-                    <div class="exp-card__media">
-                        <img src="/imgs/about-img-1.png" alt="Star Gazing" class="exp-card__img">
-                        <div class="exp-card__overlay"></div>
-                        <span class="exp-card__season-tag exp-card__season-tag--night">Nights</span>
-                    </div>
-                    <div class="exp-card__content">
-                        <div class="exp-card__meta">
-                            <span class="exp-card__month">Best: Oct — Mar</span>
-                            <span class="exp-card__dot"></span>
-                            <span class="exp-card__temp">Clear Skies</span>
-                        </div>
-                        <h3 class="exp-card__title">Star Gazing at Kanatal</h3>
-                        <p class="exp-card__desc">
-                            At 7,500 feet with minimal light pollution, Kanatal offers one of
-                            India's clearest night skies. Guided astronomy sessions, telescope
-                            viewing and open-air stargazing on the forest deck.
-                        </p>
-                        <div class="exp-card__highlights">
-                            <span>Telescope Viewing</span>
-                            <span>Guided Sessions</span>
-                            <span>Milky Way</span>
-                            <span>Constellation Maps</span>
-                        </div>
-                        <div class="exp-card__link">
-                            Explore Star Gazing
-                            <svg width="14" height="12" viewBox="0 0 14 12" fill="none">
-                                <path d="M13 6L1 6M8.45 1L13 6L8.45 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
-                    </div>
-                </a>
-            </div>
+            @endforelse
 
         </div>
+
     </div>
+
 </section>
 
 
-<!-- ════════════════════════════════
-     5. EDITORIAL GALLERY
-════════════════════════════════ -->
+
 <section class="exp-gallery section_padding">
+
     <div class="container">
 
         <div class="text-center mb-5">
+
             <div class="section__subtitle justify-content-center" data-animate="fade-up">
-                <span>In The Moment</span>
+
+                <span>{{ $field($expGallery, 'section_title', 'In The Moment') }}</span>
+
                 <div class="subtitle_line justify-content-center">
-                        <div class="line"></div>
-                        <div class="line_icon"><img src="/imgs/Vector.svg" alt=""></div>
-                        <div class="line"></div>
-                    </div>
+
+                    <div class="line"></div>
+
+                    <div class="line_icon"><img src="/imgs/Vector.svg" alt=""></div>
+
+                    <div class="line"></div>
+
+                </div>
+
             </div>
-            <h2 class="section__title my-3" data-animate="split-title">Captured By Our Guests</h2>
+
+            <h2 class="section__title my-3" data-animate="split-title">{{ $field($expGallery, 'section_headline', 'Captured By Our Guests') }}</h2>
+
             <p class="exp-gallery__sub" data-animate="fade-up" data-delay="0.1">
-                Real moments, real people, real Himalayas.
+
+                {{ $field($expGallery, 'description', 'Real moments, real people, real Himalayas.') }}
+
             </p>
+
         </div>
 
-        <!-- Editorial masonry layout -->
+
+
         <div class="exp-gallery__grid" data-animate="fade-up" data-delay="0.1">
 
-            <!-- Row 1: tall left + 2 stacked right -->
-            <a href="/imgs/g-1.webp"
+            @foreach($galleryItems as $item)
+
+            @php
+
+                $layoutClass = match($item['layout']) {
+
+                    'tall' => 'exp-gallery__item--tall',
+
+                    'wide' => 'exp-gallery__item--wide',
+
+                    'tall-sm' => 'exp-gallery__item--tall-sm',
+
+                    default => '',
+
+                };
+
+            @endphp
+
+            <a href="{{ $item['src'] }}"
+
                data-fancybox="exp-gallery"
-               data-caption="Morning light through the pine forest"
-               class="exp-gallery__item exp-gallery__item--tall">
-                <img src="/imgs/g-1.webp" alt="">
+
+               data-caption="{{ $item['caption'] }}"
+
+               class="exp-gallery__item {{ $layoutClass }}">
+
+                <img src="{{ $item['src'] }}" alt="">
+
                 <div class="exp-gallery__item-overlay">
+
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+
                         <circle cx="11" cy="11" r="8" stroke="white" stroke-width="1.5"/>
+
                         <path d="M21 21l-4.35-4.35M11 8v6M8 11h6" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+
                     </svg>
+
                 </div>
+
             </a>
 
-            <a href="/imgs/g-2.webp"
-               data-fancybox="exp-gallery"
-               data-caption="Trek to Kodia jungle"
-               class="exp-gallery__item">
-                <img src="/imgs/g-2.webp" alt="">
-                <div class="exp-gallery__item-overlay">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                        <circle cx="11" cy="11" r="8" stroke="white" stroke-width="1.5"/>
-                        <path d="M21 21l-4.35-4.35M11 8v6M8 11h6" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                    </svg>
-                </div>
-            </a>
-
-            <a href="/imgs/g-3.webp"
-               data-fancybox="exp-gallery"
-               data-caption="Snowfall at Whispering Pines"
-               class="exp-gallery__item">
-                <img src="/imgs/g-4.webp" alt="">
-                <div class="exp-gallery__item-overlay">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                        <circle cx="11" cy="11" r="8" stroke="white" stroke-width="1.5"/>
-                        <path d="M21 21l-4.35-4.35M11 8v6M8 11h6" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                    </svg>
-                </div>
-            </a>
-
-            <!-- Row 2: wide left + portrait right -->
-            <a href="/imgs/g-5.webp"
-               data-fancybox="exp-gallery"
-               data-caption="Bonfire evenings"
-               class="exp-gallery__item exp-gallery__item--wide">
-                <img src="/imgs/g-5.webp" alt="">
-                <div class="exp-gallery__item-overlay">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                        <circle cx="11" cy="11" r="8" stroke="white" stroke-width="1.5"/>
-                        <path d="M21 21l-4.35-4.35M11 8v6M8 11h6" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                    </svg>
-                </div>
-            </a>
-
-            <a href="/imgs/g-1.webp"
-               data-fancybox="exp-gallery"
-               data-caption="Star gazing on the deck"
-               class="exp-gallery__item exp-gallery__item--tall-sm">
-                <img src="/imgs/g-1.webp" alt="">
-                <div class="exp-gallery__item-overlay">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                        <circle cx="11" cy="11" r="8" stroke="white" stroke-width="1.5"/>
-                        <path d="M21 21l-4.35-4.35M11 8v6M8 11h6" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                    </svg>
-                </div>
-            </a>
-
-            <a href="/imgs/g-2.webp"
-               data-fancybox="exp-gallery"
-               data-caption="Adventure activities"
-               class="exp-gallery__item">
-                <img src="/imgs/g-2.webp" alt="">
-                <div class="exp-gallery__item-overlay">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                        <circle cx="11" cy="11" r="8" stroke="white" stroke-width="1.5"/>
-                        <path d="M21 21l-4.35-4.35M11 8v6M8 11h6" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                    </svg>
-                </div>
-            </a>
-
-            <a href="/imgs/g-3.webp"
-               data-fancybox="exp-gallery"
-               data-caption="The forest in morning mist"
-               class="exp-gallery__item">
-                <img src="/imgs/g-3.webp" alt="">
-                <div class="exp-gallery__item-overlay">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                        <circle cx="11" cy="11" r="8" stroke="white" stroke-width="1.5"/>
-                        <path d="M21 21l-4.35-4.35M11 8v6M8 11h6" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                    </svg>
-                </div>
-            </a>
+            @endforeach
 
         </div>
+
     </div>
+
 </section>
 
 
-<!-- CTA — reuse retreat-cta from other pages -->
+
 <section class="retreat-cta section_padding">
+
     <div class="container">
+
         <div class="retreat-cta__inner" data-animate="fade-up">
+
             <div class="retreat-cta__line"></div>
-            <h2 class="retreat-cta__heading">Which Season Calls To You?</h2>
+
+            <h2 class="retreat-cta__heading">{{ $field($expCta, 'section_headline', 'Which Season Calls To You?') }}</h2>
+
             <p class="retreat-cta__sub">
-                Every visit is different. <br>
-                Let us help you pick the perfect time to come.
+
+                {!! $html($expCta, 'description', 'Every visit is different. <br>Let us help you pick the perfect time to come.') !!}
+
             </p>
-            <a href="/enquire/" class="header__button header__button--one mt-4">
-                Plan Your Experience
+
+            <a href="{{ ($expCta && $expCta->button_link) ? $expCta->button_link : route('enquire') }}" class="header__button header__button--one mt-4">
+
+                {{ $field($expCta, 'button_name', 'Plan Your Experience') }}
+
                 <svg width="14" height="12" viewBox="0 0 14 12" fill="none">
+
                     <path d="M13 6L1 6M8.45 1L13 6L8.45 11" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
                 </svg>
+
             </a>
+
         </div>
+
     </div>
+
 </section>
+
+
 
 @include('footer')
+

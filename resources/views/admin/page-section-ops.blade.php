@@ -134,6 +134,14 @@
                                     @enderror
                                 </div>
                                 <div class="mb-4">
+                                    <label for="section_subtitle" class="form-label">Section Subtitle</label>
+                                    <textarea name="section_subtitle" id="section_subtitle" cols="30" rows="6" class="form-control"
+                                        placeholder="Enter Subtitle">{{ !empty($section->encrypted_id) ? htmlspecialchars_decode($section->section_subtitle) : old('section_subtitle') }}</textarea>
+                                    @error('section_subtitle')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="mb-4">
                                     <label for="description" class="form-label">Description <span
                                             class="text-danger">*</span></label>
                                     <textarea name="description" id="description" cols="30" rows="10" class="form-control"

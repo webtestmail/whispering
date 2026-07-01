@@ -32,13 +32,13 @@
                     <a href="{{ route('home') }}" class="nav__link">Home</a>
                     <a href="{{ route('the.retreat') }}" class="nav__link">The Retreat</a>
                     <a href="{{ route('accommodation') }}" class="nav__link">Accommodation</a>
-                    <a href="#" class="nav__link">Experiences</a>
-                    <a href="#" class="nav__link">Dining</a>
-                    <a href="#" class="nav__link">Events & Groups</a>
+                    <a href="{{ route('experiences') }}" class="nav__link">Experiences</a>
+                    <a href="{{ route('dining') }}" class="nav__link">Dining</a>
+                    <a href="{{ route('events') }}" class="nav__link">Events & Groups</a>
                     <!-- <a href="#" class="nav__link">Contact</a> -->
                 </nav>
                 <div class="header_buttons ">
-                    <a class="header__button header__button--one">
+                    <a href="{{ route('location') }}" class="header__button header__button--one">
                         Kanatal 22°c
                         <svg width="23" height="16" viewBox="0 0 23 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" clip-rule="evenodd" d="M4 6.79245C3.99983 6.37614 4.09024 5.96388 4.26607 5.57923C4.4419 5.19458 4.6997 4.84508 5.02474 4.5507C5.34978 4.25633 5.73568 4.02285 6.1604 3.86361C6.58512 3.70436 7.04032 3.62248 7.5 3.62264C8.18933 3.62264 8.82267 3.8086 9.35333 4.1117C9.44882 4.16318 9.53197 4.23145 9.5979 4.31247C9.66382 4.39349 9.71119 4.48564 9.73721 4.58348C9.76323 4.68133 9.76737 4.7829 9.7494 4.88222C9.73143 4.98154 9.69171 5.0766 9.63258 5.16181C9.57344 5.24703 9.49608 5.32066 9.40505 5.37839C9.31402 5.43613 9.21117 5.47679 9.10253 5.49798C8.99389 5.51918 8.88167 5.52048 8.77247 5.50181C8.66327 5.48314 8.5593 5.44488 8.46667 5.38928C8.17786 5.22233 7.84262 5.13313 7.5 5.13208C7.09219 5.1296 6.69522 5.25096 6.37251 5.47679C6.0498 5.70262 5.81997 6.01989 5.71972 6.3779C5.61947 6.73592 5.6546 7.11403 5.81948 7.45184C5.98437 7.78966 6.2695 8.06768 6.62933 8.24151C6.82312 8.33791 6.96668 8.50008 7.02845 8.69234C7.09021 8.8846 7.06511 9.09121 6.95867 9.26672C6.85223 9.44222 6.67317 9.57224 6.46087 9.62818C6.24858 9.68411 6.02045 9.66138 5.82667 9.56498C5.2752 9.29415 4.81452 8.89372 4.49307 8.40583C4.17162 7.91793 4.00129 7.3606 4 6.79245Z" fill="white"/>

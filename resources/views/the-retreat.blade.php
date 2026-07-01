@@ -4,6 +4,49 @@
 
 @extends('layouts.MainLayouts')
 @section('content')
+@php
+  
+    $getSection = fn(string $key) => $sections[$key] ?? null;
+    $field = fn($section, string $key, $default) => ($section && filled($section->{$key})) ? $section->{$key} : $default;
+    $html = fn($section, string $key, string $default) => ($section && filled($section->{$key})) ? htmlspecialchars_decode($section->{$key}) : $default;
+    $moreImages = fn($section) => ($section && !empty($section->more_images)) ? (json_decode($section->more_images, true) ?? []) : [];
+
+    $brandStory = $getSection('brand_story');
+    $founder = $getSection('founder');
+    $journey = $getSection('journey');
+    $difference = $getSection('difference');
+    $cinematicVideo = $getSection('cinematic_video');
+    $storyGallery = $getSection('story_gallery');
+    $values = $getSection('values');
+    $retreatCta = $getSection('retreat_cta');
+
+    $brandStoryImages = $moreImages($brandStory);
+    $galleryImages = $moreImages($storyGallery);
+
+    $defaultJourneySteps = [
+        ['title' => 'Arrive', 'desc' => 'Pine-scented air greets you as you wind up the mountain road.'],
+        ['title' => 'Settle In', 'desc' => 'Your cottage, warm and unhurried, invites you to simply breathe.'],
+        ['title' => 'Explore', 'desc' => 'Trek forest trails, stargaze at midnight, feel the Himalayan pulse.'],
+        ['title' => 'Reconnect', 'desc' => 'Shared meals, bonfire evenings, stories under a canopy of stars.'],
+        ['title' => 'Depart Renewed', 'desc' => 'You leave lighter. The mountains keep a part of you.'],
+    ];
+
+    $defaultDifferenceItems = [
+        ['icon' => 'https://cdn-icons-png.flaticon.com/512/290/290208.png', 'title' => 'Mountain Serenity', 'desc' => '7,500 feet of undisturbed Himalayan quiet, away from tourist crowds.'],
+        ['icon' => 'https://cdn-icons-png.flaticon.com/256/181/181297.png', 'title' => 'Thoughtful Hospitality', 'desc' => 'Every detail considered — from fire-warmed rooms to hand-picked menus.'],
+        ['icon' => 'https://cdn-icons-png.flaticon.com/512/3504/3504016.png', 'title' => 'Curated Experiences', 'desc' => 'Star gazing, forest trails, adventure — nothing generic, everything intentional.'],
+        ['icon' => 'https://static.thenounproject.com/png/2720580-200.png', 'title' => 'Sustainable Living', 'desc' => 'Built with the forest, not against it. Low impact, high awareness.'],
+    ];
+
+    $defaultGalleryImages = ['/imgs/g-1.webp', '/imgs/g-2.webp', '/imgs/g-3.webp', '/imgs/g-4.webp', '/imgs/g-5.webp', '/imgs/g-2.webp', '/imgs/g-3.webp', '/imgs/g-4.webp', '/imgs/g-5.webp'];
+
+    $defaultValueItems = [
+        ['icon' => '/imgs/c1.png', 'title' => 'Authenticity', 'desc' => 'Real experiences, real people, real Himalayas.'],
+        ['icon' => '/imgs/c2.png', 'title' => 'Nature', 'desc' => 'Every design decision respects the forest first.'],
+        ['icon' => '/imgs/c3.png', 'title' => 'Comfort', 'desc' => 'Warmth without excess. Simple, considered, complete.'],
+        ['icon' => '/imgs/c4.png', 'title' => 'Connection', 'desc' => 'With nature, with each other, with yourself.'],
+    ];
+@endphp
 @if($page->page_image)
 <section class="page-hero">
     <div class="page-hero__media">
@@ -30,21 +73,21 @@
             <div class="col-lg-5" data-animate="fade-right">
                 <div class="brand-story__images">
                     <div class="brand-story__img-main">
-                        <img src="/imgs/ab-1.webp" alt="Whispering Pines Story">
+                        <img src="{{ ($brandStory && $brandStory->section_image) ? asset($brandStory->section_image) : asset('/imgs/ab-1.webp') }}" alt="Whispering Pines Story">
                     </div>
                     <div class="brand-story__img-accent">
-                        <img src="/imgs/about-img-1.png" alt="The forest">
+                        <img src="{{ !empty($brandStoryImages[0]) ? asset($brandStoryImages[0]) : asset('/imgs/about-img-1.png') }}" alt="The forest">
                     </div>
                     <div class="brand-story__year-tag">
                         <span>Est.</span>
-                        <strong>2015</strong>
+                        <strong>{{ $field($brandStory, 'section_subheading', '2015') }}</strong>
                     </div>
                 </div>
             </div>
             <div class="col-lg-7 ps-lg-5">
 
                 <div class="section__subtitle" data-animate="fade-up">
-                    <span>Our Story</span>
+                    <span>{{ $field($brandStory, 'section_title', '') }}</span>
                     <div class="subtitle_line">
                         <div class="line"></div>
                         <div class="line_icon">
@@ -62,25 +105,16 @@
                 </div>
 
                 <h2 class="section__title my-3" data-animate="split-title">
-                    Where The Himalayas <br> Whisper Peace
+                    {!! $html($brandStory, 'section_headline', '') !!}
                 </h2>
 
                 <div class="brand-story__text" data-animate="fade-up" data-delay="0.1">
-                    <p>Whispering Pines was born from a simple longing — to find a place where
-                        the noise of the world fades and only the mountains speak. Nestled at
-                        7,500 feet in Kanatal, our retreat was hand-crafted stone by stone,
-                        guided by the belief that true luxury is silence, space, and stillness.
-                        We chose Kanatal not for its convenience, but for its soul. Dense pine
-                        and oak forests, panoramic views of the Gangotri range, and the quiet
-                        that only the Himalayas can offer — this is why we are here, and why
-                        our guests return.</p>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus ad doloribus sunt iste vel cum
-                        tenetur, omnis voluptate id. Voluptate!</p>
+                    {!! $html($brandStory, 'description', '') !!}
                 </div>
 
                 <!-- pull quote -->
                 <blockquote class="brand-story__quote" data-animate="fade-up" data-delay="0.3">
-                    "We didn't build a destination. We preserved a feeling."
+                     {!! $html($brandStory, 'section_subtitle', '') !!}
                 </blockquote>
             </div>
 
@@ -93,18 +127,16 @@
     <div class="container">
         <div class="founder__inner" data-animate="fade-up">
             <div class="founder__img-wrap">
-                <img src="https://img.magnific.com/premium-vector/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-vector-illustration_561158-3396.jpg?semt=ais_hybrid&w=740&q=80"
-                    alt="Founder" class="founder__img">
+                <img src="{{ ($founder && $founder->section_image) ? asset($founder->section_image) : 'https://img.magnific.com/premium-vector/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-vector-illustration_561158-3396.jpg?semt=ais_hybrid&w=740&q=80' }}"
+                    alt="{{ $field($founder, 'section_headline', 'Founder') }}" class="founder__img">
                 <div class="founder__img-ring"></div>
             </div>
             <p class="founder__philosophy">
-                "I wanted every guest to arrive as a traveller and leave as someone
-                who had found a part of themselves they forgot existed. The mountains
-                have that power — we simply created the space for it."
+                {!! $html($founder, 'description', '') !!}
             </p>
             <div class="founder__divider"></div>
-            <span class="founder__name">Rajiv Negi</span>
-            <span class="founder__title">Founder, Whispering Pines</span>
+            <span class="founder__name">{{ $field($founder, 'section_title', '') }}</span>
+            <span class="founder__title">{{ $field($founder, 'section_headline', '') }}</span>
         </div>
     </div>
 </section>
@@ -113,7 +145,7 @@
     <div class="container">
         <div class="text-center mb-5">
             <div class="section__subtitle justify-content-center" data-animate="fade-up">
-                <span>The Journey</span>
+                <span>{{ $field($journey, 'section_title', 'The Journey') }}</span>
                 <div class="subtitle_line justify-content-center">
                     <div class="line"></div>
                     <div class="line_icon">
@@ -129,50 +161,24 @@
                     <div class="line"></div>
                 </div>
             </div>
-            <h2 class="section__title" data-animate="split-title">Your Experience Unfolds</h2>
+            <h2 class="section__title" data-animate="split-title">{{ $field($journey, 'section_headline', 'Your Experience Unfolds') }}</h2>
         </div>
 
         <div class="journey__timeline" data-stagger>
-            <div class="journey__step">
-                <div class="journey__step-num">01</div>
-                <div class="journey__step-line"></div>
-                <div class="journey__step-content">
-                    <h4 class="journey__step-title">Arrive</h4>
-                    <p>Pine-scented air greets you as you wind up the mountain road.</p>
+            @if($journey && $journey->pagesubsections->count() > 0)
+                @foreach($journey->pagesubsections as $step)
+                <div class="journey__step">
+                    <div class="journey__step-num">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</div>
+                    <div class="journey__step-line"></div>
+                    <div class="journey__step-content">
+                        <h4 class="journey__step-title">{{ $step->section_headline }}</h4>
+                        <p>{!! htmlspecialchars_decode($step->description) !!}</p>
+                    </div>
                 </div>
-            </div>
-            <div class="journey__step">
-                <div class="journey__step-num">02</div>
-                <div class="journey__step-line"></div>
-                <div class="journey__step-content">
-                    <h4 class="journey__step-title">Settle In</h4>
-                    <p>Your cottage, warm and unhurried, invites you to simply breathe.</p>
-                </div>
-            </div>
-            <div class="journey__step">
-                <div class="journey__step-num">03</div>
-                <div class="journey__step-line"></div>
-                <div class="journey__step-content">
-                    <h4 class="journey__step-title">Explore</h4>
-                    <p>Trek forest trails, stargaze at midnight, feel the Himalayan pulse.</p>
-                </div>
-            </div>
-            <div class="journey__step">
-                <div class="journey__step-num">04</div>
-                <div class="journey__step-line"></div>
-                <div class="journey__step-content">
-                    <h4 class="journey__step-title">Reconnect</h4>
-                    <p>Shared meals, bonfire evenings, stories under a canopy of stars.</p>
-                </div>
-            </div>
-            <div class="journey__step">
-                <div class="journey__step-num">05</div>
-                <div class="journey__step-line"></div>
-                <div class="journey__step-content">
-                    <h4 class="journey__step-title">Depart Renewed</h4>
-                    <p>You leave lighter. The mountains keep a part of you.</p>
-                </div>
-            </div>
+                @endforeach
+            @else
+             
+            @endif
         </div>
     </div>
 </section>
@@ -184,7 +190,7 @@
 
             <div class="col-lg-4">
                 <div class="section__subtitle" data-animate="fade-up">
-                    <span>Why Us</span>
+                    <span>{{ $field($difference, 'section_title', 'Why Us') }}</span>
                     <div class="subtitle_line">
                         <div class="line"></div>
                         <div class="line_icon">
@@ -204,55 +210,32 @@
                     </div>
                 </div>
                 <h2 class="section__title my-3" data-animate="split-title">
-                    What Sets Whispering Pines Apart
+                    {{ $field($difference, 'section_headline', 'What Sets Whispering Pines Apart') }}
                 </h2>
                 <p class="mt-3" data-animate="fade-up" data-delay="0.1">
-                    Not every resort is a retreat. We are built on four quiet convictions.
+                    {!! $html($difference, 'description', '') !!}
                 </p>
             </div>
 
             <div class="col-lg-8">
                 <div class="row g-4" data-stagger>
-                    <div class="col-sm-6">
-                        <div class="difference__item">
-                            <div class="difference__icon">
-                                <img src="https://cdn-icons-png.flaticon.com/512/290/290208.png" alt="">
+                    @if($difference && $difference->pagesubsections->count() > 0)
+                        @foreach($difference->pagesubsections as $item)
+                        <div class="col-sm-6">
+                            <div class="difference__item">
+                                <div class="difference__icon">
+                                    <img src="{{ $item->section_image ? asset($item->section_image) : ($defaultDifferenceItems[$loop->index]['icon'] ?? '') }}" alt="">
+                                </div>
+                                <h4 class="difference__title">{{ $item->section_headline }}</h4>
+                                <p class="difference__desc">{!! htmlspecialchars_decode($item->description) !!}</p>
                             </div>
-                            <h4 class="difference__title">Mountain Serenity</h4>
-                            <p class="difference__desc">7,500 feet of undisturbed Himalayan quiet, away from tourist
-                                crowds.</p>
                         </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="difference__item">
-                            <div class="difference__icon">
-                                <img src="https://cdn-icons-png.flaticon.com/256/181/181297.png" alt="">
-                            </div>
-                            <h4 class="difference__title">Thoughtful Hospitality</h4>
-                            <p class="difference__desc">Every detail considered — from fire-warmed rooms to hand-picked
-                                menus.</p>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="difference__item">
-                            <div class="difference__icon">
-                                <img src="https://cdn-icons-png.magnific.com/512/3504/3504016.png" alt="">
-                            </div>
-                            <h4 class="difference__title">Curated Experiences</h4>
-                            <p class="difference__desc">Star gazing, forest trails, adventure — nothing generic,
-                                everything intentional.</p>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="difference__item">
-                            <div class="difference__icon">
-                                <img src="https://static.thenounproject.com/png/2720580-200.png" alt="">
-                            </div>
-                            <h4 class="difference__title">Sustainable Living</h4>
-                            <p class="difference__desc">Built with the forest, not against it. Low impact, high
-                                awareness.</p>
-                        </div>
-                    </div>
+                        @endforeach
+                    @else
+                        @foreach($defaultDifferenceItems as $item)
+                      
+                        @endforeach
+                    @endif
                 </div>
             </div>
 
@@ -261,11 +244,16 @@
 </section>
 
 
+@php
+    $videoSrc = ($cinematicVideo && $cinematicVideo->video_link)
+        ? $cinematicVideo->video_link . (str_contains($cinematicVideo->video_link, '?') ? '&' : '?') . 'autoplay=1&rel=0'
+        : 'https://www.youtube.com/embed/YOUR_ID?autoplay=1&rel=0';
+@endphp
 <section class="cinematic-video section_padding">
     <div class="container">
         <div class="cinematic-video__card" data-bs-toggle="modal" data-bs-target="#videoModal"
-            data-video-src="https://www.youtube.com/embed/YOUR_ID?autoplay=1&rel=0" data-animate="scale-up">
-            <img src="/imgs/banner.png" alt="Experience Whispering Pines" class="cinematic-video__img">
+            data-video-src="{{ $videoSrc }}" data-animate="scale-up">
+            <img src="{{ ($cinematicVideo && $cinematicVideo->section_image) ? asset($cinematicVideo->section_image) : asset('/imgs/banner.png') }}" alt="{{ $field($cinematicVideo, 'section_headline', 'Experience Whispering Pines') }}" class="cinematic-video__img">
             <div class="cinematic-video__overlay"></div>
             <div class="cinematic-video__content">
                 <button class="cinematic-video__play">
@@ -274,8 +262,8 @@
                             stroke-linejoin="round" />
                     </svg>
                 </button>
-                <h3 class="cinematic-video__heading">Experience Whispering Pines</h3>
-                <span class="cinematic-video__label">Watch the film</span>
+                <h3 class="cinematic-video__heading">{{ $field($cinematicVideo, 'section_title', 'Experience Whispering Pines') }}</h3>
+                <span class="cinematic-video__label">{{ $field($cinematicVideo, 'section_headline', 'Watch the film') }}</span>
             </div>
         </div>
     </div>
@@ -305,7 +293,7 @@
     <div class="container">
         <div class="text-center mb-5">
             <div class="section__subtitle justify-content-center" data-animate="fade-up">
-                <span>In Frame</span>
+                <span>{{ $field($storyGallery, 'section_title', 'In Frame') }}</span>
                 <div class="subtitle_line justify-content-center">
                     <div class="line"></div>
                     <div class="line_icon">
@@ -314,37 +302,23 @@
                     <div class="line"></div>
                 </div>
             </div>
-            <h2 class="section__title text-white my-3" data-animate="split-title">Moments From The Mountains</h2>
+            <h2 class="section__title text-white my-3" data-animate="split-title">{{ $field($storyGallery, 'section_headline', 'Moments From The Mountains') }}</h2>
         </div>
 
         <div class="story-gallery__grid mt-4" data-animate="fade-up" data-delay="0.1">
-            <div class="story-gallery__item">
-                <img src="/imgs/g-1.webp" alt="">
-            </div>
-            <div class="story-gallery__item">
-                <img src="/imgs/g-2.webp" alt="">
-            </div>
-            <div class="story-gallery__item">
-                <img src="/imgs/g-3.webp" alt="">
-            </div>
-            <div class="story-gallery__item ">
-                <img src="/imgs/g-4.webp" alt="">
-            </div>
-            <div class="story-gallery__item">
-                <img src="/imgs/g-5.webp" alt="">
-            </div>
-            <div class="story-gallery__item">
-                <img src="/imgs/g-2.webp" alt="">
-            </div>
-            <div class="story-gallery__item">
-                <img src="/imgs/g-3.webp" alt="">
-            </div>
-            <div class="story-gallery__item ">
-                <img src="/imgs/g-4.webp" alt="">
-            </div>
-            <div class="story-gallery__item">
-                <img src="/imgs/g-5.webp" alt="">
-            </div>
+            @if(count($galleryImages) > 0)
+                @foreach($galleryImages as $image)
+                <div class="story-gallery__item">
+                    <img src="{{ asset($image) }}" alt="">
+                </div>
+                @endforeach
+            @else
+                @foreach($defaultGalleryImages as $image)
+                <div class="story-gallery__item">
+                    <img src="{{ asset($image) }}" alt="">
+                </div>
+                @endforeach
+            @endif
         </div>
     </div>
 </section>
@@ -427,7 +401,7 @@
     <div class="container">
         <div class="text-center mb-5">
             <div class="section__subtitle justify-content-center" data-animate="fade-up">
-                <span>What We Stand For</span>
+                <span>{{ $field($values, 'section_title', 'What We Stand For') }}</span>
                 <div class="subtitle_line justify-content-center">
                     <div class="line"></div>
                     <div class="line_icon">
@@ -436,46 +410,35 @@
                     <div class="line"></div>
                 </div>
             </div>
-            <h2 class="section__title" data-animate="split-title">Our Four Convictions</h2>
+            <h2 class="section__title" data-animate="split-title">{{ $field($values, 'section_headline', 'Our Four Convictions') }}</h2>
         </div>
 
         <div class="row g-4 justify-content-center" data-stagger>
-            <div class="col-lg-3 col-sm-6">
-                <div class="values__item">
-                    <div class="values__icon">
-                        <img src="/imgs/c1.png" alt="">
+            @if($values && $values->pagesubsections->count() > 0)
+                @foreach($values->pagesubsections as $item)
+                <div class="col-lg-3 col-sm-6">
+                    <div class="values__item">
+                        <div class="values__icon">
+                            <img src="{{ $item->section_image ? asset($item->section_image) : asset($defaultValueItems[$loop->index]['icon'] ?? '/imgs/c1.png') }}" alt="">
+                        </div>
+                        <h4 class="values__title">{{ $item->section_headline }}</h4>
+                        <p class="values__desc">{!! htmlspecialchars_decode($item->description) !!}</p>
                     </div>
-                    <h4 class="values__title">Authenticity</h4>
-                    <p class="values__desc">Real experiences, real people, real Himalayas.</p>
                 </div>
-            </div>
-            <div class="col-lg-3 col-sm-6">
-                <div class="values__item">
-                    <div class="values__icon">
-                        <img src="/imgs/c2.png" alt="">
+                @endforeach
+            @else
+                @foreach($defaultValueItems as $item)
+                <div class="col-lg-3 col-sm-6">
+                    <div class="values__item">
+                        <div class="values__icon">
+                            <img src="{{ asset($item['icon']) }}" alt="">
+                        </div>
+                        <h4 class="values__title">{{ $item['title'] }}</h4>
+                        <p class="values__desc">{{ $item['desc'] }}</p>
                     </div>
-                    <h4 class="values__title">Nature</h4>
-                    <p class="values__desc">Every design decision respects the forest first.</p>
                 </div>
-            </div>
-            <div class="col-lg-3 col-sm-6">
-                <div class="values__item">
-                    <div class="values__icon">
-                        <img src="/imgs/c3.png" alt="">
-                    </div>
-                    <h4 class="values__title">Comfort</h4>
-                    <p class="values__desc">Warmth without excess. Simple, considered, complete.</p>
-                </div>
-            </div>
-            <div class="col-lg-3 col-sm-6">
-                <div class="values__item">
-                    <div class="values__icon">
-                        <img src="/imgs/c4.png" alt="">
-                    </div>
-                    <h4 class="values__title">Connection</h4>
-                    <p class="values__desc">With nature, with each other, with yourself.</p>
-                </div>
-            </div>
+                @endforeach
+            @endif
         </div>
     </div>
 </section>
@@ -488,13 +451,13 @@
     <div class="container">
         <div class="retreat-cta__inner" data-animate="fade-up">
             <div class="retreat-cta__line"></div>
-            <h2 class="retreat-cta__heading">Your Himalayan Story Awaits</h2>
+            <h2 class="retreat-cta__heading">{{ $field($retreatCta, 'section_headline', 'Your Himalayan Story Awaits') }}</h2>
             <p class="retreat-cta__sub">
-                Every season brings a different silence. <br>
-                When will yours begin?
+                {!! $html($retreatCta, 'description', 'Every season brings a different silence. <br>
+                When will yours begin?') !!}
             </p>
-            <a href="/enquire/" class="header__button header__button--one mt-4">
-                Plan Your Escape
+            <a href="{{ ($retreatCta && $retreatCta->button_link) ? $retreatCta->button_link : route('enquire') }}" class="header__button header__button--one mt-4">
+                {{ $field($retreatCta, 'button_name', 'Plan Your Escape') }}
                 <svg width="14" height="12" viewBox="0 0 14 12" fill="none">
                     <path d="M13 6L1 6M8.45 1L13 6L8.45 11" stroke="white" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round" />
@@ -513,16 +476,17 @@
 
 <script>
     const videoModal = document.getElementById('videoModal');
-    const videoIframe = document.getElementById('videoIframe');
+    const videoIframe = document.getElementById('testimonialIframe');
 
-    videoModal.addEventListener('show.bs.modal', (e) => {
-        // e.relatedTarget = the element that triggered the modal
-        const trigger = e.relatedTarget;
-        const src = trigger?.dataset?.videoSrc || '';
-        videoIframe.src = src;
-    });
+    if (videoModal && videoIframe) {
+        videoModal.addEventListener('show.bs.modal', (e) => {
+            const trigger = e.relatedTarget;
+            const src = trigger?.dataset?.videoSrc || '';
+            videoIframe.src = src;
+        });
 
-    videoModal.addEventListener('hide.bs.modal', () => {
-        videoIframe.src = '';
-    });
+        videoModal.addEventListener('hide.bs.modal', () => {
+            videoIframe.src = '';
+        });
+    }
 </script>

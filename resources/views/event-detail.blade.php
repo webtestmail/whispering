@@ -1,262 +1,137 @@
-@section('title', 'Events | Whispering Pines')
-@section('description', '')
+@section('title', $event->meta_title ?? ($event->title . ' | Whispering Pines'))
+@section('description', $event->meta_description ?? '')
+@section('keywords', $event->meta_keyword ?? '')
+
 @include('header')
 
-<!-- Events & Groups Listing  page  -->
+@php
+$intro = $sections['event_intro'] ?? null;
+$stats = $sections['event_stats'] ?? null;
+$highlights = $sections['event_highlights'] ?? null;
+$experiences = $sections['event_experiences'] ?? null;
+$cta = $sections['event_cta'] ?? null;
+$decode = fn($section, string $field) => $section && filled($section->{$field}) ? htmlspecialchars_decode($section->{$field}) : '';
+$heroImage = $event->hero_image ? asset($event->hero_image) : asset('/imgs/banner.png');
+$introImage = ($intro && $intro->section_image) ? asset($intro->section_image) : ($event->listing_image ? asset($event->listing_image) : asset('/imgs/banner.png'));
+@endphp
 
 <section class="page-hero">
     <div class="page-hero__media">
-        <img src="/imgs/banner.png" alt="The Retreat" class="page-hero__img">
+        <img src="{{ $heroImage }}" alt="{{ $event->title }}" class="page-hero__img">
         <div class="page-hero__overlay"></div>
     </div>
     <div class="page-hero__content">
         <div class="section__subtitle" data-animate="fade-up">
-            <span class="text-white"> Events & Groups </span>
+            <span class="text-white">{{ $event->hero_subtitle ?: 'Events & Groups' }}</span>
         </div>
         <h1 class="page-hero__title" data-animate="split-title">
-            Crafted For Those Seeking <br> Silence Beyond The Mountains
+            {{ $event->title }}
         </h1>
+        @if($event->hero_description)
         <p class="page-hero__sub" data-animate="fade-up" data-delay="0.2">
-            A retreat born from the timeless beauty of the Himalayas.
+            {!! $decode($event, 'hero_description') !!}
         </p>
+        @endif
     </div>
 </section>
 
+@if($intro)
 <section class="event_intro section_padding">
-
     <div class="container">
-
         <div class="row align-items-center g-5">
-
             <div class="col-lg-6">
-
                 <div class="event_intro_img">
-
-                    <img src="https://www.whisperingpines.in/images/resource/events/school-camps.png" alt="">
-
+                    <img src="{{ $introImage }}" alt="{{ $event->title }}">
                 </div>
-
             </div>
-
             <div class="col-lg-6">
-
+                @if($intro->section_subtitle)
                 <div class="section__subtitle">
-                    <span>Experience Overview</span>
+                    <span>{{ $intro->section_subtitle }}</span>
                 </div>
-
-                <h2 class="section__title">
-                    Meaningful Gatherings In The Heart Of Nature
-                </h2>
-
-                <p>
-                    Surrounded by forests, mountain views and peaceful
-                    landscapes, Whispering Pines offers a unique setting
-                    for group experiences, retreats and special occasions.
-                </p>
-
-                <p>
-                    Whether it's a corporate offsite, school camp,
-                    family gathering or wellness retreat, every experience
-                    is thoughtfully designed to bring people together.
-                </p>
-
+                @endif
+                @if($intro->section_headline)
+                <h2 class="section__title">{{ $intro->section_headline }}</h2>
+                @endif
+                @foreach(($intro->subsections ?? collect()) as $paragraph)
+                <p>{!! $decode($paragraph, 'description') !!}</p>
+                @endforeach
+                @if($stats && ($stats->subsections ?? collect())->isNotEmpty())
                 <div class="event_stats">
-
+                    @foreach($stats->subsections as $stat)
                     <div class="event_stat">
-                        <strong>50+</strong>
-                        <span>Guests</span>
+                        <strong>{{ $stat->section_headline }}</strong>
+                        <span>{{ $stat->section_subheading }}</span>
                     </div>
-
-                    <div class="event_stat">
-                        <strong>15+</strong>
-                        <span>Activities</span>
-                    </div>
-
-                    <div class="event_stat">
-                        <strong>10+</strong>
-                        <span>Years Experience</span>
-                    </div>
-
+                    @endforeach
                 </div>
-
+                @endif
             </div>
-
         </div>
-
     </div>
-
 </section>
+@endif
 
-
+@if($highlights && (($highlights->subsections ?? collect())->isNotEmpty() || $highlights->section_headline))
 <section class="event_highlights section_padding">
-
     <div class="container">
-
         <div class="text-center mb-5">
-
+            @if($highlights->section_subtitle)
             <div class="section__subtitle">
-                <span>Why Choose Us</span>
+                <span>{{ $highlights->section_subtitle }}</span>
             </div>
-
-            <h2 class="section__title">
-                Designed For Memorable Experiences
-            </h2>
-
+            @endif
+            @if($highlights->section_headline)
+            <h2 class="section__title">{{ $highlights->section_headline }}</h2>
+            @endif
         </div>
-
         <div class="row g-4">
-
+            @foreach(($highlights->subsections ?? collect()) as $item)
             <div class="col-lg-3 col-md-6">
-
                 <div class="highlight_card">
-
-                    <h4>Scenic Location</h4>
-
-                    <p>
-                        Stunning mountain surroundings and fresh air.
-                    </p>
-
+                    <h4>{{ $item->section_headline }}</h4>
+                    <p>{{ $decode($item, 'description') }}</p>
                 </div>
-
             </div>
-
-            <div class="col-lg-3 col-md-6">
-
-                <div class="highlight_card">
-
-                    <h4>Comfortable Stay</h4>
-
-                    <p>
-                        Cozy rooms and cottages for every group size.
-                    </p>
-
-                </div>
-
-            </div>
-
-            <div class="col-lg-3 col-md-6">
-
-                <div class="highlight_card">
-
-                    <h4>Custom Activities</h4>
-
-                    <p>
-                        Programs tailored to your event goals.
-                    </p>
-
-                </div>
-
-            </div>
-
-            <div class="col-lg-3 col-md-6">
-
-                <div class="highlight_card">
-
-                    <h4>Dining Experience</h4>
-
-                    <p>
-                        Fresh meals served with beautiful views.
-                    </p>
-
-                </div>
-
-            </div>
-
+            @endforeach
         </div>
-
     </div>
-
 </section>
+@endif
 
-
-
-
+@if($experiences && (($experiences->subsections ?? collect())->isNotEmpty() || $experiences->section_headline))
 <section class="event_experiences section_padding">
-
     <div class="container">
-
         <div class="text-center mb-5">
-
+            @if($experiences->section_subtitle)
             <div class="section__subtitle">
-                <span>  Experiences</span>
+                <span>{{ $experiences->section_subtitle }}</span>
             </div>
-
-            <h2 class="section__title">
-                Moments That Bring People Together
-            </h2>
-
+            @endif
+            @if($experiences->section_headline)
+            <h2 class="section__title">{{ $experiences->section_headline }}</h2>
+            @endif
         </div>
-
         <div class="row g-4">
-
+            @foreach(($experiences->subsections ?? collect()) as $item)
             <div class="col-lg-4">
-
                 <div class="experience_card">
-
-                    <img src="https://www.whisperingpines.in/images/resource/events/outbound-training.png" alt="">
-
+                    @if($item->section_image)
+                    <img src="{{ asset($item->section_image) }}" alt="{{ $item->section_headline }}">
+                    @else
+                    <img src="{{ asset('/imgs/banner.png') }}" alt="{{ $item->section_headline }}">
+                    @endif
                     <div class="experience_content">
-
-                        <h4>Outdoor Activities</h4>
-
-                        <p>
-                            Guided adventures and engaging group challenges.
-                        </p>
-
+                        <h4>{{ $item->section_headline }}</h4>
+                        <p>{!! $decode($item, 'description') !!}</p>
                     </div>
-
                 </div>
-
             </div>
-
-            <div class="col-lg-4">
-
-                <div class="experience_card">
-
-                    <img src="https://www.whisperingpines.in/images/resource/events/do-nothing-holidays.png" alt="">
-
-                    <div class="experience_content">
-
-                        <h4>Bonfire Evenings</h4>
-
-                        <p>
-                            Relax, connect and create lasting memories.
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="col-lg-4">
-
-                <div class="experience_card">
-
-                    <img src="https://www.whisperingpines.in/images/resource/events/class-reunions.png" alt="">
-
-                    <div class="experience_content">
-
-                        <h4>Nature Walks</h4>
-
-                        <p>
-                            Discover peaceful trails and mountain views.
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </div>
-
+            @endforeach
         </div>
-
     </div>
-
 </section>
-
-
-
+@endif
 
 
 @include('footer')

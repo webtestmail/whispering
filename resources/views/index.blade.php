@@ -370,7 +370,7 @@ $testimonials = \App\Models\Admin\PageSections::where('id', 134)->first();
 $testimonial_contents = \App\Models\Admin\Testimonials::where('status','active')->get();
 @endphp
 @if($testimonials)
-<section class="testimonialSection section_padding">
+<section class="testimonialSection section_padding" id="guests-speak">
     <div class="container">
 
         <div class="text-center" data-animate="fade-up">

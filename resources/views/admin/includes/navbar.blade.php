@@ -48,6 +48,15 @@
                     </a>
                     <ul class="nxl-submenu">
                         <li class="nxl-item">
+                            <a class="nxl-link" href="{{ route('admin.manage_accommodations') }}">Manage Accommodations</a>
+                        </li>
+                        <li class="nxl-item">
+                            <a class="nxl-link" href="{{ route('admin.manage_experiences') }}">Manage Experiences</a>
+                        </li>
+                        <li class="nxl-item">
+                            <a class="nxl-link" href="{{ route('admin.manage_events') }}">Manage Events</a>
+                        </li>
+                        <li class="nxl-item">
                             <a class="nxl-link" href="{{ route('admin.manage_brands') }}">Manage Brands</a>
                         </li>
                         <li class="nxl-item">
@@ -58,6 +67,9 @@
                         </li>
                         <li class="nxl-item">
                             <a class="nxl-link" href="{{ route('admin.manage_galleries') }}">Manage Gallery</a>
+                        </li>
+                        <li class="nxl-item">
+                            <a class="nxl-link" href="{{ route('admin.manage_legal') }}">Manage Legal Pages</a>
                         </li>
                     </ul>
                 </li>

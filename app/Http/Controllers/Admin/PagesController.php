@@ -442,6 +442,7 @@ class PagesController extends Controller
                     'position_order' => $position_order,
                     'section_title' => $request->section_title,
                     'section_headline' => $request->section_headline,
+                    'section_subtitle' => $request->section_subtitle,
                     'description' => htmlspecialchars($request->description, ENT_QUOTES),
                     'button_name' => $request->button_name,
                     'button_link' => $request->button_link,
@@ -516,6 +517,7 @@ class PagesController extends Controller
             }
             $section->section_title = $request->section_title;
             $section->section_headline = $request->section_headline;
+            $section->section_subtitle = $request->section_subtitle;
             $section->description = htmlspecialchars($request->description, ENT_QUOTES);
             $section->button_name = $request->button_name;
             $section->button_link = $request->button_link;

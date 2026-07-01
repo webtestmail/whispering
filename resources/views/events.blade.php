@@ -1,224 +1,75 @@
-@section('title', 'Events & Groups | Whispering Pines')
-@section('description', '')
+@section('title', $page->meta_title ?? 'Events & Groups | Whispering Pines')
+@section('description', $page->meta_description ?? '')
+@section('keywords', $page->meta_keyword ?? '')
+
 @include('header')
 
-<!-- Events & Groups Listing  page  -->
+@php
+$listingIntro = $sections['listing_intro'] ?? null;
+$field = fn($section, string $key, $default) => ($section && filled($section->{$key})) ? $section->{$key} : $default;
+$html = fn($section, string $key, $default) => ($section && filled($section->{$key})) ? htmlspecialchars_decode($section->{$key}) : $default;
+$heroImage = ($page && $page->page_image) ? asset($page->page_image) : asset('/imgs/banner.png');
+@endphp
 
 <section class="page-hero">
     <div class="page-hero__media">
-        <img src="/imgs/banner.png" alt="The Retreat" class="page-hero__img">
+        <img src="{{ $heroImage }}" alt="Events & Groups" class="page-hero__img">
         <div class="page-hero__overlay"></div>
     </div>
     <div class="page-hero__content">
         <div class="section__subtitle" data-animate="fade-up">
-            <span class="text-white"> Events & Groups </span>
+            <span class="text-white">{{ $field($page, 'header_footer_name', 'Events & Groups') }}</span>
         </div>
         <h1 class="page-hero__title" data-animate="split-title">
-            Crafted For Those Seeking <br> Silence Beyond The Mountains
+            {!! $field($page, 'breadcrumb_headline', 'Crafted For Those Seeking <br> Silence Beyond The Mountains') !!}
         </h1>
         <p class="page-hero__sub" data-animate="fade-up" data-delay="0.2">
-            A retreat born from the timeless beauty of the Himalayas.
+            {{ $field($page, 'breadcrumb_description', 'A retreat born from the timeless beauty of the Himalayas.') }}
         </p>
     </div>
 </section>
 
-
 <section class="events_listing section_padding">
-
     <div class="container">
-
         <div class="text-center mb-5">
-
             <div class="section__subtitle">
-                <span>Events & Groups</span>
+                <span>{{ $field($listingIntro, 'section_title', 'Events & Groups') }}</span>
             </div>
-
             <h2 class="section__title">
-                Curated Experiences For Every Group
+                {{ $field($listingIntro, 'section_headline', 'Curated Experiences For Every Group') }}
             </h2>
-
             <p class="events_intro">
-                Whether you're planning a corporate retreat, school camp,
-                family celebration or wellness gathering, Whispering Pines
-                offers the perfect mountain setting for memorable experiences.
+                {{ $html($listingIntro, 'description', 'Whether you\'re planning a corporate retreat, school camp, family celebration or wellness gathering, Whispering Pines offers the perfect mountain setting for memorable experiences.') }}
             </p>
-
         </div>
 
         <div class="row g-4">
-
+            @forelse($events as $eventItem)
             <div class="col-lg-4 col-md-6">
-
                 <div class="event_card">
-
                     <div class="event_card_img">
-                        <img src="https://www.whisperingpines.in/images/resource/events/outbound-training.png" alt="">
+                        @if($eventItem->listing_image)
+                        <img src="{{ asset($eventItem->listing_image) }}" alt="{{ $eventItem->title }}">
+                        @else
+                        <img src="{{ asset('/imgs/banner.png') }}" alt="{{ $eventItem->title }}">
+                        @endif
                     </div>
-
                     <div class="event_card_content">
-
-                        <h4>Corporate Offsites</h4>
-
-                        <p>
-                            Team bonding, strategy sessions and memorable
-                            retreats in nature.
-                        </p>
-
-                        <a href="/events/detail" class="event_link">
-                            Explore More
+                        <h4>{{ $eventItem->title }}</h4>
+                        <p>{!! htmlspecialchars_decode($eventItem->listing_description ?? '') !!}</p>
+                        <a href="{{ route('event.detail', $eventItem->slug) }}" class="event_link">
+                            {{ $eventItem->link_text ?: 'Explore More' }}
                         </a>
-
                     </div>
-
                 </div>
-
             </div>
-
-            <div class="col-lg-4 col-md-6">
-
-                <div class="event_card">
-
-                    <div class="event_card_img">
-                        <img src="https://www.whisperingpines.in/images/resource/events/school-camps.png" alt="">
-                    </div>
-
-                    <div class="event_card_content">
-
-                        <h4>School & Youth Camps</h4>
-
-                        <p>
-                            Educational adventures, outdoor learning and
-                            fun-filled activities.
-                        </p>
-
-                        <a href="/events/detail" class="event_link">
-                            Explore More
-                        </a>
-
-                    </div>
-
-                </div>
-
+            @empty
+            <div class="col-12 text-center">
+                <p>No events available at the moment.</p>
             </div>
-
-            <div class="col-lg-4 col-md-6">
-
-                <div class="event_card">
-
-                    <div class="event_card_img">
-                        <img src="https://www.whisperingpines.in/images/resource/events/do-nothing-holidays.png" alt="">
-                    </div>
-
-                    <div class="event_card_content">
-
-                        <h4>Family Gatherings</h4>
-
-                        <p>
-                            Celebrate togetherness amidst breathtaking
-                            Himalayan surroundings.
-                        </p>
-
-                        <a href="/events/detail" class="event_link">
-                            Explore More
-                        </a>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="col-lg-4 col-md-6">
-
-                <div class="event_card">
-
-                    <div class="event_card_img">
-                        <img src="https://www.whisperingpines.in/images/resource/events/class-reunions.png" alt="">
-                    </div>
-
-                    <div class="event_card_content">
-
-                        <h4>Outbound Training</h4>
-
-                        <p>
-                            Leadership, collaboration and experiential
-                            learning programs.
-                        </p>
-
-                        <a href="/events/detail" class="event_link">
-                            Explore More
-                        </a>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="col-lg-4 col-md-6">
-
-                <div class="event_card">
-
-                    <div class="event_card_img">
-                        <img src="https://www.whisperingpines.in/images/resource/events/yoga-retreats.png" alt="">
-                    </div>
-
-                    <div class="event_card_content">
-
-                        <h4>Yoga Camps</h4>
-
-                        <p>
-                            Reconnect with yourself through wellness,
-                            mindfulness and nature.
-                        </p>
-
-                        <a href="/events/detail" class="event_link">
-                            Explore More
-                        </a>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="col-lg-4 col-md-6">
-
-                <div class="event_card">
-
-                    <div class="event_card_img">
-                        <img src="https://www.whisperingpines.in/images/resource/events/music-workshop.png" alt="">
-                    </div>
-
-                    <div class="event_card_content">
-
-                        <h4>Class Reunions</h4>
-
-                        <p>
-                            Relive memories and create new ones in a peaceful
-                            mountain retreat.
-                        </p>
-
-                        <a href="/events/detail" class="event_link">
-                            Explore More
-                        </a>
-
-                    </div>
-
-                </div>
-
-            </div>
-
+            @endforelse
         </div>
-
     </div>
-
-
 </section>
-
-
-
-
-
 
 @include('footer')

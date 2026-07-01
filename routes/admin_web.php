@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\Admin\auth\AuthController as AdminAuthController;
+use App\Http\Controllers\Admin\AccommodationsController;
+use App\Http\Controllers\Admin\EventsController;
+use App\Http\Controllers\Admin\ExperiencesController;
 use App\Http\Controllers\Admin\BannersController;
 use App\Http\Controllers\Admin\BlogsController;
 use App\Http\Controllers\Admin\BrandsController;
@@ -9,6 +12,7 @@ use App\Http\Controllers\Admin\DeleteController;
 use App\Http\Controllers\Admin\FormController;
 use App\Http\Controllers\Admin\GalleriesController;
 use App\Http\Controllers\Admin\GalleryCategoriesController;
+use App\Http\Controllers\Admin\LegalController;
 use App\Http\Controllers\Admin\PagesController;
 use App\Http\Controllers\Admin\ServicesController;
 use App\Http\Controllers\Admin\StatusController;
@@ -90,6 +94,24 @@ Route::prefix('/admin')->name('admin.')->middleware(['auth:admin', is_admin::cla
     Route::get('/brand_data', [BrandsController::class, 'brand_data'])->name('brand.data');
     Route::match(['post', 'delete'], '/brand_delete', [BrandsController::class, 'brand_delete'])->name('brand.delete');
 
+    Route::get('/manage_accommodations', [AccommodationsController::class, 'manageAccommodations'])->name('manage_accommodations');
+    Route::get('/accommodation_data', [AccommodationsController::class, 'accommodation_data'])->name('accommodation.data');
+    Route::match(['get', 'post'], '/add_accommodation', [AccommodationsController::class, 'addAccommodation'])->name('add.accommodation');
+    Route::match(['get', 'post'], '/edit_accommodation/{accommodation}', [AccommodationsController::class, 'editAccommodation'])->name('edit.accommodation');
+    Route::match(['post', 'delete'], '/accommodation_delete', [AccommodationsController::class, 'accommodation_delete'])->name('accommodation.delete');
+
+    Route::get('/manage_experiences', [ExperiencesController::class, 'manageExperiences'])->name('manage_experiences');
+    Route::get('/experience_data', [ExperiencesController::class, 'experience_data'])->name('experience.data');
+    Route::match(['get', 'post'], '/add_experience', [ExperiencesController::class, 'addExperience'])->name('add.experience');
+    Route::match(['get', 'post'], '/edit_experience/{experience}', [ExperiencesController::class, 'editExperience'])->name('edit.experience');
+    Route::match(['post', 'delete'], '/experience_delete', [ExperiencesController::class, 'experience_delete'])->name('experience.delete');
+
+    Route::get('/manage_events', [EventsController::class, 'manageEvents'])->name('manage_events');
+    Route::get('/event_data', [EventsController::class, 'event_data'])->name('event.data');
+    Route::match(['get', 'post'], '/add_event', [EventsController::class, 'addEvent'])->name('add.event');
+    Route::match(['get', 'post'], '/edit_event/{event}', [EventsController::class, 'editEvent'])->name('edit.event');
+    Route::match(['post', 'delete'], '/event_delete', [EventsController::class, 'event_delete'])->name('event.delete');
+
     Route::get('/manage_testimonials', [TestimonialsController::class, 'manageTestimonials'])->name('manage_testimonials');
     Route::get('/testimonial_data', [TestimonialsController::class, 'testimonial_data'])->name('testimonial.data');
     Route::match(['get', 'post'], '/add_testimonial', [TestimonialsController::class, 'addTestimonial'])->name('add.testimonial');
@@ -104,6 +126,9 @@ Route::prefix('/admin')->name('admin.')->middleware(['auth:admin', is_admin::cla
     Route::get('/gallery_data', [GalleriesController::class, 'gallery_data'])->name('gallery.data');
     Route::match(['get', 'post'], '/add_gallery', [GalleriesController::class, 'addGallery'])->name('add.gallery');
     Route::match(['get', 'post'], '/edit_gallery/{gallery}', [GalleriesController::class, 'editGallery'])->name('edit.gallery');
+
+    Route::get('/manage_legal', [LegalController::class, 'manageLegal'])->name('manage_legal');
+    Route::match(['get', 'post'], '/edit_legal/{legal}', [LegalController::class, 'editLegal'])->name('edit.legal');
 
     Route::get('/manage_company', [CompanyController::class, 'manageCompany'])->name('manage_company');
     Route::post('/edit_company/{company}', [CompanyController::class, 'editCompany'])->name('edit.company');
